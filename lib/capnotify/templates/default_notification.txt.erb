@@ -1,0 +1,31 @@
+<%= fetch(:stage, '').to_s.capitalize %> <%= application.capitalize %> deployment completed!
+
+Deployed by: <%= deployer_username %>
+Deployed at: <%= Time.now %>
+
+Application: <%= fetch(:application, 'N/A') %>
+Repository:  <%= fetch(:repository, 'N/A') %>
+<% if fetch(:stage, nil) %>Environment: <%= stage %><% end %>
+
+<% if fetch(:branch, nil) %>Ref:         <%= branch %><% end %>
+Sha1:        <%= fetch(:latest_revision, 'N/A') %>
+Release:     <%= fetch(:release_name, 'N/A') %>
+<% if fetch(:mailgun_message, nil) %>
+  Custom Message:
+  <%= fetch(:mailgun_message) %>
+<% end %>
+
+<% if fetch(:url, nil) %>WWW:         <%= fetch(:url) %><% end %>
+<% if fetch(:mailgun_include_servers, false) %>
+Deployed to the following servers:
+<% fetch(:mailgun_deploy_servers).each do |server| %> - <%= server.host %>
+<% end %>
+<% end %>
+<% log_output = mailgun.log_output(fetch(:mailgun_previous_revision, nil), fetch(:real_revision, nil)) %>
+<% unless log_output.count == 0 %>
+Log:
+---------------------------------------------------------------------------------
+<% log_output.each do |line| %>
+  <%= line.join(' ') %>
+<% end %>
+<% end %>
