@@ -25,6 +25,13 @@ module Capnotify
         end
       end
 
+      # built-in values:
+
+      # override this to change the default behavior for capnotify.appname
+      _cset(:capnotify_appname) do
+        [ fetch(:application, nil), fetch(:stage, nil) ].compact.join(" ")
+      end
+
       # default messages:
       # (these can be overridden)
 
@@ -84,6 +91,14 @@ module Capnotify
       # maintenance start/complete
       after('deploy:web:disable') { trigger :maintenance_page_up }
       after('deploy:web:enable')  { trigger :maintenance_page_down }
+
+      # before update_code, fetch the current revision
+      # this is needed to ensure that no matter when capnotify fetches the commit logs,
+      # it will have the correct starting point.
+      before 'deploy:update_code' do
+        set :capnotify_previous_revision, fetch(:current_revision, nil) # the revision that's currently deployed at this moment
+      end
+
     end
   end
 
