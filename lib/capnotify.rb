@@ -1,8 +1,6 @@
 require "capnotify/version"
 require 'capnotify/plugin'
 
-puts "loaded plugin.."
-
 module Capnotify
   def self.load_into(config)
     config.load do
@@ -14,16 +12,6 @@ module Capnotify
         end
       end
 
-      # configure the callbacks
-
-      before('deploy') { trigger :deploy_start }
-      after('deploy')  { trigger :deploy_complete }
-
-      before('deploy:migrate') { trigger :migrate_start }
-      after('deploy:migrate')  { trigger :migrate_complete }
-
-      after('deploy:web:disable') { trigger :maintenance_page_up }
-      after('deploy:web:enable')  { trigger :maintenance_page_down }
 
       # some configuration
       _cset :capnotify_deployment_notification_html_template_path, capnotify.built_in_template_for('default_notification.html.erb')
@@ -82,6 +70,20 @@ module Capnotify
         # clean up the text output (remove leading spaces and more than 2 newlines in a row
         data.gsub(/^ +/, '').gsub(/\n{3,}/, "\n\n")
       end
+
+      # configure the callbacks
+
+      # deploy start/complete
+      before('deploy') { trigger :deploy_start }
+      after('deploy')  { trigger :deploy_complete }
+
+      # migration start/complete
+      before('deploy:migrate') { trigger :migrate_start }
+      after('deploy:migrate')  { trigger :migrate_complete }
+
+      # maintenance start/complete
+      after('deploy:web:disable') { trigger :maintenance_page_up }
+      after('deploy:web:enable')  { trigger :maintenance_page_down }
     end
   end
 
