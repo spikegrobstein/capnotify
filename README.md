@@ -1,4 +1,4 @@
-# Capnotify
+# Capnotify  [![Build Status](https://travis-ci.org/spikegrobstein/capnotify.png)](https://travis-ci.org/spikegrobstein/capnotify)
 
 Very much work-in-progress capistrano plugin for managing notifications. Features built-in
 templates for emails and status updates of the deployment. Designed to be extensible by other
