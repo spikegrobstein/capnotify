@@ -14,22 +14,73 @@ describe Capnotify do
 
   context "built-in callbacks" do
 
-    context "deploy callbacks" do
-      it "should trigger :deploy_start before deploy"
+    before do
+      # there has to be a better way of doing this...
+      # create a MockObject to handle the callbacks
+      class MockObject
+      end
+      MockObject.stub!(:deploy_start => true)
+      MockObject.stub!(:deploy_complete => true)
+      MockObject.stub!(:migrate_start => true)
+      MockObject.stub!(:migrate_complete => true)
+      MockObject.stub!(:maintenance_page_up => true)
+      MockObject.stub!(:maintenance_page_down => true)
 
-      it "should trigger :deploy_complete after deploy"
+      config.load do
+        # these don't get triggered unless something is defined.
+        on(:deploy_start) { MockObject.deploy_start }
+        on(:deploy_complete) { MockObject.deploy_complete }
+        on(:migrate_start) { MockObject.migrate_start }
+        on(:migrate_complete) { MockObject.migrate_complete }
+        on(:maintenance_page_up) { MockObject.maintenance_page_up }
+        on(:maintenance_page_down) { MockObject.maintenance_page_down }
+
+        # stub some tasks
+        namespace :deploy do
+          task(:default) {}
+          task(:migrate) {}
+          namespace :web do
+            task(:enable) {}
+            task(:disable) {}
+          end
+        end
+      end
+    end
+
+    context "deploy callbacks" do
+      it "should trigger :deploy_start before deploy" do
+        MockObject.should_receive(:deploy_start)
+        config.find_and_execute_task('deploy')
+      end
+
+      it "should trigger :deploy_complete after deploy" do
+        MockObject.should_receive(:deploy_complete)
+        config.find_and_execute_task('deploy')
+      end
     end
 
     context "migration callbacks" do
-      it "should trigger :migrate_start before deploy:migrate"
+      it "should trigger :migrate_start before deploy:migrate" do
+        MockObject.should_receive(:migrate_start)
+        config.find_and_execute_task('deploy:migrate')
+      end
 
-      it "should trigger :migrate_complete after deploy:migrate"
+      it "should trigger :migrate_complete after deploy:migrate" do
+        MockObject.should_receive(:migrate_complete)
+        config.find_and_execute_task('deploy:migrate')
+      end
     end
 
     context "maintenance page callbacks" do
-      it "should trigger :maintenance_page_up before deploy:web:disable"
+      it "should trigger :maintenance_page_up before deploy:web:disable" do
+        MockObject.should_receive(:maintenance_page_up)
+        config.find_and_execute_task('deploy:web:disable')
+      end
 
-      it "should trigger :maintenance_page_down after deploy:web:enable"
+      it "should trigger :maintenance_page_down after deploy:web:enable" do
+        MockObject.should_receive(:maintenance_page_down)
+        config.find_and_execute_task('deploy:web:enable')
+      end
     end
 
   end
