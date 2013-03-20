@@ -41,5 +41,5 @@ describe Capnotify::Plugin do
 
   end
 
-  context "#sections"
+  context "#components"
 end

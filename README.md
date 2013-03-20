@@ -89,24 +89,33 @@ on :maintenance_page_up { IRC.chat("#{ application } Maintenance started.") }
 notification email should be customizable:
 
  * custom CSS?
- * custom sections (log, target servers, breakdown of task times, etc)
+ * custom components (log, target servers, breakdown of task times, etc)
 
-email contains an array of Capnotify::EmailSection. each of those consists of:
+email contains an array of Capnotify::Component. each of those consists of:
 
- * header -- a subheading for this section
+ * header -- a subheading for this component
  * css_class -- the css class to use for styling
  * content -- either a string, array or hash. Or other, if the template supports it. officially, only these types are supported.
  * owner -- the plugin that created it.
- * name -- the name of the section (a symbol)
+ * name -- the name of the component (a symbol)
 
-A Capnotify plugin may append (or insert, etc) an EmailSection at any moment.
+A Capnotify plugin may append (or insert, etc) a Component at any moment.
 At the time the template is built (when sending the email), the data is materialized
 into the final form.
 
-When adding sections, one specifies the owner (the name of the plugin that created it).
-This enables the user to disable sections ad-hoc by plugin or by name.
+When adding components, one specifies the owner (the name of the plugin that created it).
+This enables the user to disable components ad-hoc by plugin or by name.
 
-capnotify.sections#blacklist_by_name
-capnotify.sections#blacklist_by_plugin
+capnotify.components#blacklist_by_name
+capnotify.components#blacklist_by_plugin
 
-sections should still be added, but will be skipped at time of template generation.
+components should still be added, but will be skipped at time of template generation.
+
+```ruby
+capnotify.add_component( section )
+capnotify.insert_component( section, index )
+capnotify.prepend_component( section )
+```
+
+Capnotify::ComponentList?
+

@@ -2,12 +2,17 @@ require 'capnotify/version'
 
 module Capnotify
   module Plugin
+
+    attr_reader :sections
+
     # convenience method for getting the friendly app name
     # If the stage is specified (the deployment is using multistage), include that.
     # given that the application is "MyApp" and the stage is "production", this will return "MyApp production"
     def appname
       fetch(:capnotify_appname, "")
     end
+
+    # component stuff:
 
     # template stuff:
 
