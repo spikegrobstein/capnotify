@@ -1,4 +1,6 @@
 require "capnotify/version"
+require 'capnotify/component'
+require 'capnotify/component_list'
 require 'capnotify/plugin'
 
 module Capnotify
