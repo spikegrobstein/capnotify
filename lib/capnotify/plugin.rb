@@ -3,8 +3,6 @@ require 'capnotify/version'
 module Capnotify
   module Plugin
 
-    attr_reader :sections
-
     # convenience method for getting the friendly app name
     # If the stage is specified (the deployment is using multistage), include that.
     # given that the application is "MyApp" and the stage is "production", this will return "MyApp production"
@@ -24,6 +22,10 @@ module Capnotify
     # given a path to an ERB template, process it with the current binding and return the output.
     def build_template(template_path)
       ERB.new( File.open( template_path ).read ).result(self.binding)
+    end
+
+    def components
+      fetch(:capnotify_component_list)
     end
 
   end

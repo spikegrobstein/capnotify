@@ -12,6 +12,12 @@ describe Capnotify do
 
   let(:capnotify) { config.capnotify }
 
+  context "loading" do
+    it "should initialize capnotify.components" do
+      capnotify.components.should_not be_nil
+    end
+  end
+
   context "built-in callbacks" do
 
     before do

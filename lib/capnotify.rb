@@ -28,6 +28,7 @@ module Capnotify
       end
 
       # built-in values:
+      set :capnotify_component_list, Capnotify::ComponentList.new
 
       # override this to change the default behavior for capnotify.appname
       _cset(:capnotify_appname) do
