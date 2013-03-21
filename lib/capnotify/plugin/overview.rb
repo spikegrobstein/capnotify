@@ -2,11 +2,13 @@ module Capnotify
   module Plugin
     class Overview
 
+      @component_name = :capnotify_overview
+
       def initialize(config)
 
         config.load do
           on(:deploy_complete) do
-            c = Capnotify::Component.new(:capnotify_overview, :header => 'Overview')
+            c = Capnotify::Component.new(@component_name, :header => 'Overview')
 
             c.content = {
               'Deployed by' => 'insert username',
@@ -19,6 +21,10 @@ module Capnotify
           end
         end
 
+      end
+
+      def unload
+        # capnotify
       end
 
     end
