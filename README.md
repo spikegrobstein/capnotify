@@ -99,23 +99,26 @@ email contains an array of Capnotify::Component. each of those consists of:
  * owner -- the plugin that created it.
  * name -- the name of the component (a symbol)
 
-A Capnotify plugin may append (or insert, etc) a Component at any moment.
-At the time the template is built (when sending the email), the data is materialized
-into the final form.
+A Capnotify extension may append (or insert, etc) a Component at any moment.
 
-When adding components, one specifies the owner (the name of the plugin that created it).
-This enables the user to disable components ad-hoc by plugin or by name.
-
-capnotify.components#blacklist_by_name
-capnotify.components#blacklist_by_plugin
-
-components should still be added, but will be skipped at time of template generation.
+When the template(s) are built, components are iterated over (in order) and
+materialized into the template.
 
 ```ruby
-capnotify.add_component( section )
-capnotify.insert_component( section, index )
-capnotify.prepend_component( section )
+capnotify.components #=> an array of loaded components
+capnotify.remove_component( name ) #=> remove the named component and return it
+capnotify.component( name ) #=> return the named component
 ```
 
-Capnotify::ComponentList?
+### Extensions
+
+```ruby
+class Overview < Capnotify::Extension
+
+  # called when initializing
+  def setup
+
+  end
+end
+```
 
