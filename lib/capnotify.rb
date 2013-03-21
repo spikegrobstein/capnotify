@@ -1,6 +1,5 @@
 require "capnotify/version"
 require 'capnotify/component'
-require 'capnotify/component_list'
 require 'capnotify/plugin'
 
 module Capnotify
@@ -28,7 +27,7 @@ module Capnotify
       end
 
       # built-in values:
-      set :capnotify_component_list, Capnotify::ComponentList.new
+      set :capnotify_component_list, []
 
       # override this to change the default behavior for capnotify.appname
       _cset(:capnotify_appname) do
