@@ -10,6 +10,15 @@ module Capnotify
       fetch(:capnotify_appname, "")
     end
 
+    def load_plugin(plugin)
+      capnotify_plugins[plugin] = plugin.new(@config)
+    end
+
+    def unload_plugin(plugin)
+      capnotify_plugins[plugin].unload if capnotify_plugins[plugin].respond_to?(:unload)
+      capnotify_plugins.delete(plugin)
+    end
+
     # component stuff:
 
     # template stuff:

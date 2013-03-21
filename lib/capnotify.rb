@@ -1,6 +1,7 @@
 require "capnotify/version"
 require 'capnotify/component'
 require 'capnotify/plugin'
+require 'capnotify/plugin/overview'
 
 module Capnotify
   def self.load_into(config)
@@ -28,6 +29,7 @@ module Capnotify
 
       # built-in values:
       set :capnotify_component_list, []
+      set :capnotify_plugins, {}
 
       # override this to change the default behavior for capnotify.appname
       _cset(:capnotify_appname) do
@@ -101,6 +103,8 @@ module Capnotify
         set :capnotify_previous_revision, fetch(:current_revision, nil) # the revision that's currently deployed at this moment
       end
 
+      capnotify.load_plugin Capnotify::Plugin::Overview
+      #capnotify.load_plugin Capnotify::Plugin::Details
     end
   end
 

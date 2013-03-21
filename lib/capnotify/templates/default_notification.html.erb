@@ -71,6 +71,25 @@
     <%= capnotify.appname %> deployment completed!
   </h1>
 
+  <% capnotify.components.each do |component| %>
+  <div class="<%= ['section', component.css_class].join(' ') %>">
+    <h2><%= component.header %></h2>
+
+    <% if component.content.is_a? Hash %>
+    <dl>
+    <% component.content.each do |k,v| %>
+      <dt><%= k %></dt>
+      <dd><%= v %></dd>
+    <% end %>
+    </dl>
+    <% elsif component.content.is_a? Array %>
+
+    <% elsif compoent.content.is_a? String %>
+
+    <% end %>
+  </div>
+  <% end %>
+
   <div class="section">
     <h2>Deployment Overview</h2>
 
