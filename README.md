@@ -1,5 +1,13 @@
 # Capnotify  [![Build Status](https://travis-ci.org/spikegrobstein/capnotify.png)](https://travis-ci.org/spikegrobstein/capnotify)
 
+             __________________
+        - --|\   Deployment   /|   ___                    _   _  __
+       - ---| \   Complete   / |  / __|__ _ _ __ _ _  ___| |_(_)/ _|_  _
+      - ----| /\____________/\ | | (__/ _` | '_ \ ' \/ _ \  _| |  _| || |
+     - -----|/ - Capistrano - \|  \___\__,_| .__/_||_\___/\__|_|_|  \_, |
+    - ------|__________________|           |_|                      |__/
+
+
 Very much work-in-progress capistrano plugin for managing notifications. Features built-in
 templates for emails and status updates of the deployment. Designed to be extensible by other
 plugins to integration with other services (eg: mailgun, postmark, actionmailer, IRC, grove.io,
