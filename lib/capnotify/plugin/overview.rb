@@ -1,30 +1,24 @@
 module Capnotify
   module Plugin
-    class Overview
+    module Overview
 
-      @component_name = :capnotify_overview
+      def init
+        before(:deploy) do
+          c = Capnotify::Component.new(:capnotify_overview, :header => 'Overview')
 
-      def initialize(config)
+          c.content = {
+            'Deployed by' => 'insert username',
+            'Deployed at' => Time.now,
+            'Application' => fetch(:application, ''),
+            'Repository' => fetch(:repository, '')
+          }
 
-        config.load do
-          on(:deploy_complete) do
-            c = Capnotify::Component.new(@component_name, :header => 'Overview')
-
-            c.content = {
-              'Deployed by' => 'insert username',
-              'Deployed at' => Time.now,
-              'Application' => fetch(:application, ''),
-              'Repository' => fetch(:repository, '')
-            }
-
-            capnotify.components << c
-          end
+          capnotify.components << c
         end
-
       end
 
       def unload
-        # capnotify
+        capnotify.components.delete_if { |p| p.name == :capnotify_overview }
       end
 
     end

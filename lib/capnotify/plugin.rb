@@ -1,4 +1,5 @@
 require 'capnotify/version'
+require 'pry'
 
 module Capnotify
   module Plugin
@@ -10,14 +11,26 @@ module Capnotify
       fetch(:capnotify_appname, "")
     end
 
-    def load_plugin(plugin)
-      capnotify_plugins[plugin] = plugin.new(@config)
+    def load_plugin(name, mod)
+      Capistrano.plugin name, mod
+      # binding.pry
+
+      get_plugin(name).init
     end
 
-    def unload_plugin(plugin)
-      capnotify_plugins[plugin].unload if capnotify_plugins[plugin].respond_to?(:unload)
-      capnotify_plugins.delete(plugin)
+    def unload_plugin(name)
+      # binding.pry
+      p = get_plugin(name)
+
+      p.unload if p.respond_to?(:unload)
+      Capistrano.remove_plugin(name)
     end
+
+    def get_plugin(name)
+      raise "Unknown plugin: #{ name }" unless Capistrano::EXTENSIONS.keys.include?(name)
+      self.send(name)
+    end
+    private :get_plugin
 
     # component stuff:
 
@@ -30,7 +43,7 @@ module Capnotify
 
     # given a path to an ERB template, process it with the current binding and return the output.
     def build_template(template_path)
-      ERB.new( File.open( template_path ).read ).result(self.binding)
+      ERB.new( File.open( template_path ).read, nil, '-' ).result(self.binding)
     end
 
     def components
