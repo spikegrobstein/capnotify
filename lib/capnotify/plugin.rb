@@ -43,7 +43,7 @@ module Capnotify
 
     # given a path to an ERB template, process it with the current binding and return the output.
     def build_template(template_path)
-      ERB.new( File.open( template_path ).read, nil, '-' ).result(self.binding)
+      ERB.new( File.open( template_path ).read, nil, '<>' ).result(self.binding)
     end
 
     def components
