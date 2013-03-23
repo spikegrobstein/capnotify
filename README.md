@@ -60,7 +60,7 @@ Following are all of the built-in default callbacks. Each callback will have a b
 description of the purpose and the time at which it's called, suggested associated messages
 (see *Messages* sections for more information about these) and an example of how to use it.
 
-#### `deploy_start`
+#### deploy_start
 
 By default he `deploy_start` hook is called immediately before the
 `deploy` Capistrano task.
@@ -73,7 +73,7 @@ Suggested message: `capnotify_deploy_start_msg`
       MyService.notify( capnotify_deploy_start_msg )
     end
 
-#### `deploy_complete`
+#### deploy_complete
 
 By default the `deploy_complete` hook is called immediately after the `deploy`
 Capistrano task.
@@ -86,7 +86,7 @@ Suggested message: `capnotify_deploy_complete_msg`
       MyService.notify( capnotify_deploy_complete_msg )
     end
 
-#### `migrate_start`
+#### migrate_start
 
 By default, the `migrate_start` hook is called immediately before `deploy:migrate`. This hook
 is designed to be used to notify DBAs of database changes or can be used to measure the
@@ -100,7 +100,7 @@ Suggested message: `capnotify_migrate_start_msg`
       MyService.notify( capnotify_migrate_start_msg )
     end
 
-#### `migrate_complete`
+#### migrate_complete
 
 By default, the `migrate_complete` hook is called immediately after `deploy:migrate` finishes.
 
@@ -112,7 +112,7 @@ Suggested message: `capnotify_migrate_complete_msg`
       MyService.notify( capnotify_migrate_complete_msg )
     end
 
-#### `maintenance_page_up`
+#### maintenance_page_up
 
 By default, the `maintenance_page_up` hook is called immediately before `deploy:web:disable`.
 
@@ -124,7 +124,7 @@ Suggested message: `capnotify_maintenance_up_msg`
       MyService.notify( capnotify_maintenance_up_msg )
     end
 
-#### `maintenance_page_down`
+#### maintenance_page_down
 
 By default, the `maintenance_page_down` hook is called immediately after `deploy:web:enable`.
 
@@ -178,7 +178,7 @@ You can override these values by `set`'ing the value in your recipe or extension
 
     set :capnotify_migrate_start_msg, "Migration has just begun!"
 
-### `capnotify.appname`
+### capnotify.appname
 
 The `capnotify.appname` function calls the `capnotify_appname` Capistrano variable which,
 by default, combines the `application` and the optional `stage` variables. To override this,
