@@ -16,7 +16,9 @@ mechanisms to extend and customize those messages as well as a collection of
 built-in, predefined messages and templates.
 
 Although currently a work in progress, Capnotify provides a solid framework to
-extend for your notification needs.
+extend for your notification needs. Until the 1.0 release, the interface can change
+in drastic ways at any time. Be sure to restrict the version of the gem until a final release
+is made.
 
 ## Installation
 
@@ -60,30 +62,111 @@ description of the purpose and the time at which it's called, suggested associat
 
 #### `deploy_start`
 
-By default he `deploy_start` callback is called automatically immediately before the
+By default he `deploy_start` hook is called immediately before the
 `deploy` Capistrano task.
 
 Suggested message: `capnotify_deploy_start_msg`
 
 ##### Example:
 
-    ```ruby
     on(:deploy_start) do
       MyService.notify( capnotify_deploy_start_msg )
     end
-    ```
 
 #### `deploy_complete`
 
+By default the `deploy_complete` hook is called immediately after the `deploy`
+Capistrano task.
+
+Suggested message: `capnotify_deploy_complete_msg`
+
+##### Example:
+
+    on(:deploy_complete) do
+      MyService.notify( capnotify_deploy_complete_msg )
+    end
+
 #### `migrate_start`
+
+By default, the `migrate_start` hook is called immediately before `deploy:migrate`. This hook
+is designed to be used to notify DBAs of database changes or can be used to measure the
+elapsed time a migration takes.
+
+Suggested message: `capnotify_migrate_start_msg`
+
+##### Example:
+
+    on(:migrate_start) do
+      MyService.notify( capnotify_migrate_start_msg )
+    end
 
 #### `migrate_complete`
 
+By default, the `migrate_complete` hook is called immediately after `deploy:migrate` finishes.
+
+Suggested message: `capnotify_migrate_complete_msg`
+
+##### Example:
+
+    on(:migrate_complete) do
+      MyService.notify( capnotify_migrate_complete_msg )
+    end
+
 #### `maintenance_page_up`
+
+By default, the `maintenance_page_up` hook is called immediately before `deploy:web:disable`.
+
+Suggested message: `capnotify_maintenance_up_msg`
+
+##### Example:
+
+    on(:maintenance_page_up) do
+      MyService.notify( capnotify_maintenance_up_msg )
+    end
 
 #### `maintenance_page_down`
 
+By default, the `maintenance_page_down` hook is called immediately after `deploy:web:enable`.
+
+Suggested message: `capnotify_maintenance_down_msg`
+
+##### Example:
+
+    on(:maintenance_page_down) do
+      MyService.notify( capnotify_maintenance_down_msg )
+    end
+
 ### Changing default callbacks
+
+Because not every Capistrano configuration is the same and not every application's needs match,
+Capnotify provides facilities to customize how the callbacks are called. In the event that your
+recipe uses different task names than the above, you can manually call the hooks using the
+`trigger` Capistrano function.
+
+For example, if you use a `deploy:api` task for deployment, but still want to leverage the
+`deploy_start` hook, you could do the following:
+
+    before('deploy:api') { trigger :deploy_start }
+    after('deploy:api')  { trigger :deploy_complete }
+
+These hooks do not have to be triggered only inside `before`/`after` blocks; they can be
+called from anywhere by using `trigger :deploy_start`.
+
+### Disabling default callbacks
+
+Setting the following Capistrano variables to `true` will disable the respective hook pairs:
+
+ * `capnotify_disable_deploy_hooks`
+ * `capnotify_disable_migrate_hooks`
+ * `capnotify_disable_maintenance_hooks`
+
+For example:
+
+    set :capnotiii_disable_deploy_hooks, true
+
+Will disable triggering both `deploy_start` and `deploy_complete`.
+
+Currently, this must be set **BEFORE** Capnotify is loaded to be effective.
 
 ## Built-in strings and functions
 
