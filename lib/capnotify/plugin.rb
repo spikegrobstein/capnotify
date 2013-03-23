@@ -13,13 +13,11 @@ module Capnotify
 
     def load_plugin(name, mod)
       Capistrano.plugin name, mod
-      # binding.pry
 
       get_plugin(name).init
     end
 
     def unload_plugin(name)
-      # binding.pry
       p = get_plugin(name)
 
       p.unload if p.respond_to?(:unload)
@@ -46,7 +44,6 @@ module Capnotify
       # FIXME: this is called every time build_template is called.
       # although this is idepodent, it's got room for optimization
       self.build_components!
-      binding.pry
 
       ERB.new( File.open( template_path ).read, nil, '<>' ).result(self.binding)
     end
