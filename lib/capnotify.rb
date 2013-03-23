@@ -104,10 +104,8 @@ module Capnotify
         set :capnotify_previous_revision, fetch(:current_revision, nil) # the revision that's currently deployed at this moment
       end
 
-      on(:load) do
-        capnotify.load_plugin :capnotify_overview, Capnotify::Plugin::Overview
-        capnotify.load_plugin :capnotify_details, Capnotify::Plugin::Details
-      end
+      capnotify.load_plugin :capnotify_overview, Capnotify::Plugin::Overview
+      capnotify.load_plugin :capnotify_details, Capnotify::Plugin::Details
     end
   end
 
