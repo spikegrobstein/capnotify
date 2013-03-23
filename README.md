@@ -162,7 +162,7 @@ Setting the following Capistrano variables to `true` will disable the respective
 
 For example:
 
-    set :capnotiii_disable_deploy_hooks, true
+    set :capnotify_disable_deploy_hooks, true
 
 Will disable triggering both `deploy_start` and `deploy_complete`.
 
