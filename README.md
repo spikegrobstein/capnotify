@@ -170,7 +170,35 @@ Currently, this must be set **BEFORE** Capnotify is loaded to be effective.
 
 ## Built-in strings and functions
 
+Capnotify has a collection of built-in strings for messages that can be embedded or overridden.
+These are all built using the `capnotify.appname` function which contains the `application` and
+optional `stage` values (eg: `MyApplication production`).
+
+You can override these values by `set`'ing the value in your recipe or extension. For example:
+
+    set :capnotify_migrate_start_msg, "Migration has just begun!"
+
+### `capnotify.appname`
+
+The `capnotify.appname` function calls the `capnotify_appname` Capistrano variable which,
+by default, combines the `application` and the optional `stage` variables. To override this,
+you can do something like the following example:
+
+    set :capnotify_appname, "#{ application }/#{ branch }"
+
+That will replace the behavior of the `capnotify.appname` calls.
+
 ### Messages
+
+The following messages are built-in using Capistrano variables. They can be overridden using
+the `set` command:
+
+ * `capnotify_migrate_start_msg`
+ * `capnotify_migrate_complete_msg`
+ * `capnotify_deploy_start_msg`
+ * `capnotify_deploy_complete_msg`
+ * `capnotify_maintenance_up_msg`
+ * `capnotify_maintenance_down_msg`
 
 ## Built-in Templates
 
