@@ -84,18 +84,26 @@ module Capnotify
       end
 
       # configure the callbacks
+      # FIXME: The `capnotify_disable_*_hooks` variables must be set BEFORE this file is loaded
+      # to properly disable the hooks. This should probably be put inside an on(:load) block.
 
       # deploy start/complete
-      before('deploy') { trigger :deploy_start }
-      after('deploy')  { trigger :deploy_complete }
+      unless fetch(:capnotify_disable_deploy_hooks, false)
+        before('deploy') { trigger :deploy_start }
+        after('deploy')  { trigger :deploy_complete }
+      end
 
       # migration start/complete
-      before('deploy:migrate') { trigger :migrate_start }
-      after('deploy:migrate')  { trigger :migrate_complete }
+      unless fetch(:capnotify_disable_migrate_hooks, false)
+        before('deploy:migrate') { trigger :migrate_start }
+        after('deploy:migrate')  { trigger :migrate_complete }
+      end
 
       # maintenance start/complete
-      after('deploy:web:disable') { trigger :maintenance_page_up }
-      after('deploy:web:enable')  { trigger :maintenance_page_down }
+      unless fetch(:capnotify_disable_maintenance_hooks, false)
+        after('deploy:web:disable') { trigger :maintenance_page_up }
+        after('deploy:web:enable')  { trigger :maintenance_page_down }
+      end
 
       # before update_code, fetch the current revision
       # this is needed to ensure that no matter when capnotify fetches the commit logs,
