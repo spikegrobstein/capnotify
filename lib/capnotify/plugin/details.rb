@@ -4,7 +4,7 @@ module Capnotify
 
       def init
         capnotify.components << Capnotify::Component.new(:capnotify_details) do |c|
-          c.header = 'Details'
+          c.header = 'Deployment Details'
 
           c.content = {}
           c.content['Branch'] = fetch(:branch, 'n/a')

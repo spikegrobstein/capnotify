@@ -4,7 +4,7 @@ module Capnotify
 
       def init
         capnotify.components << Capnotify::Component.new(:capnotify_overview) do |c|
-          c.header = 'Overview'
+          c.header = 'Deployment Overview'
 
           c.content = {}
           c.content['Deployed by'] = 'capnotify.deployed_by'
