@@ -84,8 +84,8 @@
     </dl>
     <% elsif component.content.is_a? Array %>
 
-    <% elsif compoent.content.is_a? String %>
-
+    <% elsif component.content.is_a? String %>
+      <%= component.content %>
     <% end %>
   </div>
   <% end %>
