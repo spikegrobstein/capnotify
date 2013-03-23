@@ -7,13 +7,16 @@
      - -----|/ - Capistrano - \|  \___/\_,_/ .__/_//_/\___/\__/_/_/ \_, /
     - ------|__________________|          /_/                      /___/
 
+Standardized and robust notifications sent from your Capistrano recipes.
 
-Very much work-in-progress capistrano plugin for managing notifications. Features built-in
-templates for emails and status updates of the deployment. Designed to be extensible by other
-plugins to integration with other services (eg: mailgun, postmark, actionmailer, IRC, grove.io,
-etc).
+When dealing with large-scale deployment notifications, it's important to have
+consistent language across notification media. Capnotify offers an extensible and standardized
+framework for which to send notifications at different stages of your deployment,
+mechanisms to extend and customize those messages as well as a collection of
+built-in, predefined messages and templates.
 
-not quite working, yet.
+Although currently a work in progress, Capnotify provides a solid framework to
+extend for your notification needs.
 
 ## Installation
 
@@ -29,9 +32,28 @@ Or install it yourself as:
 
     $ gem install capnotify
 
+Then, in your `Capfile`, add the following line:
+
+    require 'capnotify'
+
 ## Usage
 
-TODO: Write usage instructions here
+The current build of Capnotify is designed to be extended and doesn't provide much in the way
+of notifications out of the box. It does, however, provide a series of Capistrano callbacks
+that you can hook into and leverage your existing notification system, be it IRC, Email, 
+Hipchat, or Grove.io.
+
+See *Hooks and Callbacks* for a list of available Capistrano callbacks.
+
+See *Extensions* for information on building extensions.
+
+## Hooks and Callbacks
+
+Need to write this.
+
+## Extensions
+
+Need to write this.
 
 ## Contributing
 
@@ -40,6 +62,14 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Author
+
+Capnotify is &copy; 2013, written and maintained by Spike Grobstein and distributed under
+the MIT license (included in this repository).
+
+Homepage: https://github.com/spikegrobstein/capnotify  
+Spike Grobstein: me@spike.cx / http://spike.grobste.in
 
 ## TODO/Notes
 
