@@ -43,11 +43,20 @@ module Capnotify
 
     # given a path to an ERB template, process it with the current binding and return the output.
     def build_template(template_path)
+      # FIXME: this is called every time build_template is called.
+      # although this is idepodent, it's got room for optimization
+      self.build_components!
+      binding.pry
+
       ERB.new( File.open( template_path ).read, nil, '<>' ).result(self.binding)
     end
 
     def components
       fetch(:capnotify_component_list)
+    end
+
+    def build_components!
+      set :capnotify_component_list, self.components.map { |c| c.build! }
     end
 
   end

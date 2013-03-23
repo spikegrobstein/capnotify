@@ -3,17 +3,14 @@ module Capnotify
     module Overview
 
       def init
-        before(:deploy) do
-          c = Capnotify::Component.new(:capnotify_overview, :header => 'Overview')
+        capnotify.components << Capnotify::Component.new(:capnotify_overview) do |c|
+          c.header = 'Overview'
 
-          c.content = {
-            'Deployed by' => 'insert username',
-            'Deployed at' => Time.now,
-            'Application' => fetch(:application, ''),
-            'Repository' => fetch(:repository, '')
-          }
-
-          capnotify.components << c
+          c.content = {}
+          c.content['Deployed by'] = 'capnotify.deployed_by'
+          c.content['Deployed at'] = Time.now
+          c.content['Application'] = fetch(:application, '')
+          c.content['Repository'] = fetch(:repository, '')
         end
       end
 
