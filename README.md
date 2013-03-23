@@ -49,7 +49,51 @@ See *Extensions* for information on building extensions.
 
 ## Hooks and Callbacks
 
-Need to write this.
+Capnotify provides hooks and callbacks for common, notifiable tasks in addition
+to the standard Capistrano set.
+
+### Default callbacks
+
+Following are all of the built-in default callbacks. Each callback will have a brief
+description of the purpose and the time at which it's called, suggested associated messages
+(see *Messages* sections for more information about these) and an example of how to use it.
+
+#### `deploy_start`
+
+By default he `deploy_start` callback is called automatically immediately before the
+`deploy` Capistrano task.
+
+Suggested message: `capnotify_deploy_start_msg`
+
+##### Example:
+
+    ```ruby
+    on(:deploy_start) do
+      MyService.notify( capnotify_deploy_start_msg )
+    end
+    ```
+
+#### `deploy_complete`
+
+#### `migrate_start`
+
+#### `migrate_complete`
+
+#### `maintenance_page_up`
+
+#### `maintenance_page_down`
+
+### Changing default callbacks
+
+## Built-in strings and functions
+
+### Messages
+
+## Built-in Templates
+
+### Components
+
+### Customizing templates
 
 ## Extensions
 
