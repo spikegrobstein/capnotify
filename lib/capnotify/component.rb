@@ -27,7 +27,7 @@ module Capnotify
     end
 
     def build!
-      @builder.call(self) unless @builder.nil?
+      @builder.call(self) and @builder = nil unless @builder.nil?
 
       return self
     end
