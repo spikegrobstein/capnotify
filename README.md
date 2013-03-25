@@ -45,6 +45,17 @@ of notifications out of the box. It does, however, provide a series of Capistran
 that you can hook into and leverage your existing notification system, be it IRC, Email, 
 Hipchat, or Grove.io.
 
+
+### Quickstart
+
+Capnotify can be used in your current deployment recipes and is easy to implement. Following
+is a quickstart example for getting up and running:
+
+TODO: insert quickstart
+
+In addition, to take the next step and create reusable code, you can create an
+Extension which can be packaged as a gem.
+
 See *Hooks and Callbacks* for a list of available Capistrano callbacks.
 
 See *Extensions* for information on building extensions.
