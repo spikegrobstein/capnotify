@@ -130,9 +130,14 @@ For more information on Components, see the *Components* section below.
 In addition, to take the next step and create reusable code, you can create an
 Extension which can be packaged as a gem.
 
+See *Extensions* for information on building extensions.
+
 See *Hooks and Callbacks* for a list of available Capistrano callbacks.
 
-See *Extensions* for information on building extensions.
+See *Components* for information on creating components.
+
+See *Built-in Templates* for information on customizing templates and replacing with
+your own templates.
 
 ## Hooks and Callbacks
 
@@ -287,9 +292,15 @@ the `set` command:
 
 ## Built-in Templates
 
+TODO: full rundown of working with built-in templates
+
 ### Components
 
-### Customizing templates
+TODO: full rundown of working with components
+
+### Customizing Templates
+
+TODO: write info for replacing built-in templates
 
 ## Extensions
 
