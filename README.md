@@ -42,16 +42,90 @@ Then, in your `Capfile`, add the following line:
 
 The current build of Capnotify is designed to be extended and doesn't provide much in the way
 of notifications out of the box. It does, however, provide a series of Capistrano callbacks
-that you can hook into and leverage your existing notification system, be it IRC, Email, 
+that you can hook into and leverage your existing notification system, be it IRC, Email,
 Hipchat, or Grove.io.
 
+Following are a few examples for hooking up into these callbacks.
 
 ### Quickstart
 
-Capnotify can be used in your current deployment recipes and is easy to implement. Following
-is a quickstart example for getting up and running:
+Capnotify can be used in your current deployment recipes and is easy to implement. The
+following examples will get you up and running with these callbacks.
 
-TODO: insert quickstart
+#### Short Messages
+
+Capnotify has some built-in short messages right out of the box. If you'd like, for example,
+to send a short message notification when deployment starts and completes, it can be
+done like the following:
+
+    on(:deploy_start) do
+      SomeLib.send_message( capnotify_deploy_start_msg )
+    end
+
+    on(:deploy_complete) do
+      SomeLib.send_message( capnotify_deploy_complete_msg )
+    end
+
+In the case of the above example, replace the `SomeLib#send_message` call with your library's
+function.
+
+A full list of available callbacks and built-in messages can be found below in the
+*Hooks and Callbacks* and *Messages* sections.
+
+#### Long Messages
+
+Capnotify also has built-in long message HTML templates and are primarily designed for
+building email messages, but don't necessarily need to be used for that.
+
+For an example of how to send an email, see the following:
+
+    on(:deploy_complete) do
+      MyMailer.send_mail(
+        :text_body => capnotify_deployment_notification_text,
+        :html_body => capnotify_deployment_notification_html
+      )
+    end
+
+The `capnotify_deployment_notification_text` and `capnotify_deployment_notification_html`
+Capistrano variables are lazily evaluated, and when called, will generate the deployment
+notification email bodies for text or html respectively.
+
+See the section *Built-in Templates* below for more information about templates and how
+to further customize them.
+
+##### Components
+
+Long messages can be further customized through the use of Components. Using the
+`capnotify#components` function, you can add a `Capnotify::Component` which is a collection
+of information inside the body of an email. Capnotify comes with 2 built-in components:
+"Deployment Overview" and "Deployment Details" which contain the `ref`, `sha1`, deployer
+username, Github URL, deployment time, and repository information about the deployment.
+
+Some examples for extensions that could be added would be reports about deployment durations,
+commit logs, information about previous deploys, or custom email messages.
+
+A quick example of creating and appending a component to Capnotify is the following:
+
+    capnotify.components << Capnotify::Component.new(:my_component) do |c|
+      # this is the header that appears in the email:
+      c.header = 'Deployment Overview'
+
+      # initialize the content as a hash
+      c.content = {}
+
+      # build the collection of data
+      c.content['Deployed by'] = capnotify.deployed_by
+      c.content['Deployed at'] = Time.now
+      c.content['Application'] = fetch(:application, '')
+      c.content['Repository'] = fetch(:repository, '')
+    end
+
+This above example is taken straight from the `Overview` extension that's built into
+Capnotify.
+
+For more information on Components, see the *Components* section below.
+
+#### More information
 
 In addition, to take the next step and create reusable code, you can create an
 Extension which can be packaged as a gem.
