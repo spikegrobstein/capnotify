@@ -70,7 +70,7 @@ In the case of the above example, replace the `SomeLib#send_message` call with y
 function.
 
 A full list of available callbacks and built-in messages can be found below in the
-*Hooks and Callbacks* and *Messages* sections.
+**Hooks and Callbacks** and **Messages** sections.
 
 #### Long Messages
 
@@ -90,7 +90,7 @@ The `capnotify_deployment_notification_text` and `capnotify_deployment_notificat
 Capistrano variables are lazily evaluated, and when called, will generate the deployment
 notification email bodies for text or html respectively.
 
-See the section *Built-in Templates* below for more information about templates and how
+See the section **Built-in Templates** below for more information about templates and how
 to further customize them.
 
 ##### Components
