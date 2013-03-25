@@ -136,7 +136,7 @@ See **Hooks and Callbacks** for a list of available Capistrano callbacks.
 
 See **Components** for information on creating components.
 
-See *Built-in Templates* for information on customizing templates and replacing with
+See **Built-in Templates** for information on customizing templates and replacing with
 your own templates.
 
 ## Hooks and Callbacks
