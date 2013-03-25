@@ -123,18 +123,18 @@ A quick example of creating and appending a component to Capnotify is the follow
 This above example is taken straight from the `Overview` extension that's built into
 Capnotify.
 
-For more information on Components, see the *Components* section below.
+For more information on Components, see the **Components** section below.
 
 #### More information
 
 In addition, to take the next step and create reusable code, you can create an
 Extension which can be packaged as a gem.
 
-See *Extensions* for information on building extensions.
+See **Extensions** for information on building extensions.
 
-See *Hooks and Callbacks* for a list of available Capistrano callbacks.
+See **Hooks and Callbacks** for a list of available Capistrano callbacks.
 
-See *Components* for information on creating components.
+See **Components** for information on creating components.
 
 See *Built-in Templates* for information on customizing templates and replacing with
 your own templates.
@@ -148,7 +148,7 @@ to the standard Capistrano set.
 
 Following are all of the built-in default callbacks. Each callback will have a brief
 description of the purpose and the time at which it's called, suggested associated messages
-(see *Messages* sections for more information about these) and an example of how to use it.
+(see **Messages** sections for more information about these) and an example of how to use it.
 
 #### deploy_start
 
@@ -298,9 +298,24 @@ TODO: full rundown of working with built-in templates
 
 TODO: full rundown of working with components
 
+ * name
+ * header
+ * custom css
+ * content
+
+also
+
+ * appending / prepending components
+ * deleting components
+ * inserting components
+ * getting component by name
+ * lazy components
+
 ### Customizing Templates
 
 TODO: write info for replacing built-in templates
+
+ * replacing built-in templates
 
 ## Extensions
 
@@ -321,93 +336,4 @@ the MIT license (included in this repository).
 
 Homepage: https://github.com/spikegrobstein/capnotify  
 Spike Grobstein: me@spike.cx / http://spike.grobste.in
-
-## TODO/Notes
-
-### abstract:
-
-lay groundwork for pluggable notification backends.
-should be based around notification of events.
-
-### ideas for plugins:
-
- * mailgun -- after deploy
- * postmark
- * ping webservice with event information
-
-### features
-
- * notify when migrate start/end
- * notify when deploy start/end
- * notify when maintenance page is up
- * notify background processors stopped/started
-
-collect metrics and benchmarks on tasks
-
-```ruby
-    on :deploy_start do
-      deploy_timer = Time.now.to_f
-    end
-
-    on :deploy_complete do
-      total = Time.now.to_f - deploy_timer
-      puts "Deploy took #{ total }s to complete"
-    end
-```
-
-examples:
-
-```ruby
-on :deploy_complete { Mailgun.notify }
-
-on :migrate_start { IRC.chat("#{ application } Migration started.") }
-
-on :maintenance_page_up { IRC.chat("#{ application } Maintenance started.") }
-```
-
-### built-in messages capistrano variables:
-
- * migration_start_message
- * migration_complete_message
- * deploy_start_message
- * deploy_complete_message
-
- * deployment_notification_email_html
- * deployment_notification_email_text
-
-notification email should be customizable:
-
- * custom CSS?
- * custom components (log, target servers, breakdown of task times, etc)
-
-email contains an array of Capnotify::Component. each of those consists of:
-
- * header -- a subheading for this component
- * css_class -- the css class to use for styling
- * content -- either a string, array or hash. Or other, if the template supports it. officially, only these types are supported.
- * owner -- the plugin that created it.
- * name -- the name of the component (a symbol)
-
-A Capnotify extension may append (or insert, etc) a Component at any moment.
-
-When the template(s) are built, components are iterated over (in order) and
-materialized into the template.
-
-```ruby
-capnotify.components #=> an array of loaded components
-capnotify.remove_component( name ) #=> remove the named component and return it
-capnotify.component( name ) #=> return the named component
-```
-
-### Extensions
-
-```ruby
-class Overview < Capnotify::Extension
-
-  # called when initializing
-  def setup
-
-  end
-end
-```
 
