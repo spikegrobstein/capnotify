@@ -48,10 +48,27 @@ module Capnotify
       ERB.new( File.open( template_path ).read, nil, '<>' ).result(self.binding)
     end
 
+    # returns the capnotify_component_list
+    # this is the underlying mechanism for working with components
+    # append or prepend or insert from here.
     def components
       fetch(:capnotify_component_list)
     end
 
+    # fetch a component given the name
+    # this is most useful for getting a component directly if you want to make modificatins to it
+    def component(name)
+      components.each { |c| return c if c.name == name.to_sym }
+      return nil
+    end
+
+    # delete the component with the given name
+    # return the remaining list of components (to enable chaining)
+    def delete_component(name)
+      components.delete_if { |c| c.name == name.to_sym }
+    end
+
+    # build all components
     def build_components!
       set :capnotify_component_list, self.components.map { |c| c.build! }
     end

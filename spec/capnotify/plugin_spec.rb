@@ -146,6 +146,52 @@ describe Capnotify::Plugin do
   end
 
   context "#components" do
+    it "should return the components" do
+      capnotify.components.should === config.fetch(:capnotify_component_list)
+    end
+  end
 
+  context "#component" do
+    let!(:component) { Capnotify::Component.new(:test_component) }
+
+    before do
+      4.times do |i|
+        capnotify.components << Capnotify::Component.new("component_#{ i }")
+      end
+
+      capnotify.components << component
+    end
+
+    it "should return the component with the given name" do
+      capnotify.component(:test_component).should === component
+    end
+
+    it "should return nil if the requested component does not exist" do
+      capnotify.component(:fake_component).should be_nil
+    end
+  end
+
+  context "#delete_component" do
+    let!(:component) { Capnotify::Component.new(:test_component) }
+
+    before do
+      4.times do |i|
+        capnotify.components << Capnotify::Component.new("component_#{ i }")
+      end
+
+      capnotify.components << component
+    end
+
+    it "should not error out if you delete a non-existent component" do
+      lambda { capnotify.delete_component(:fake_component) }.should_not raise_error
+    end
+
+    it "should delete the given component" do
+      expect { capnotify.delete_component(:test_component) }.to change { capnotify.components.length }.by(-1)
+    end
+
+    it "should return the given deleted component" do
+      capnotify.delete_component(:test_component).should === capnotify.components
+    end
   end
 end
