@@ -30,8 +30,6 @@ module Capnotify
     end
     private :get_plugin
 
-    # component stuff:
-
     # template stuff:
 
     # return the path to the built-in template with the given name
@@ -47,6 +45,8 @@ module Capnotify
 
       ERB.new( File.open( template_path ).read, nil, '<>' ).result(self.binding)
     end
+
+    # component stuff
 
     # returns the capnotify_component_list
     # this is the underlying mechanism for working with components
