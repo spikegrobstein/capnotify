@@ -72,7 +72,7 @@
   </h1>
 
   <% capnotify.components.each do |component| %>
-  <div class="<%= ['section', component.css_class].join(' ') %>">
+  <div class="<%= component.css_class %>">
     <h2><%= component.header %></h2>
 
     <% if component.content.is_a? Hash %>

@@ -13,7 +13,7 @@ module Capnotify
       @name = name.to_sym
 
       @header = options[:header]
-      @css_class = options[:css_class]
+      @css_class = options[:css_class] || 'section'
 
       if block_given?
         @builder = block
