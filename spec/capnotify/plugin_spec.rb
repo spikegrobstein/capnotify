@@ -171,6 +171,59 @@ describe Capnotify::Plugin do
     end
   end
 
+  context "inserting components" do
+    let!(:component) { Capnotify::Component.new(:test_component) }
+
+    before do
+      capnotify.components.clear
+
+      # add components 0 - 3
+      4.times do |i|
+        capnotify.components << Capnotify::Component.new("component_#{ i }")
+      end
+    end
+
+    context "before" do
+
+      it "should insert the given component" do
+        expect { capnotify.insert_component_before(:component_2, component) }.to change { capnotify.components.count }.by(1)
+      end
+
+      it "should insert the given component in the correct place" do
+        capnotify.insert_component_before(:component_2, component)
+
+        capnotify.components.map(&:name)[2].should == component.name
+      end
+
+      it "should insert the component at the end if no component with given name exists" do
+        capnotify.insert_component_before(:this_component_does_not_exist, component)
+
+        capnotify.components.last.name.should == component.name
+      end
+
+    end
+
+    context "after" do
+
+      it "should insert the given component" do
+        expect { capnotify.insert_component_after(:component_2, component) }.to change { capnotify.components.count }.by(1)
+      end
+
+      it "should insert the given component in the correct place" do
+        capnotify.insert_component_after(:component_2, component)
+
+        capnotify.components.map(&:name)[3].should == component.name
+      end
+
+      it "should insert the component at the end if no component with given name exists" do
+        capnotify.insert_component_after(:this_component_does_not_exist, component)
+
+        capnotify.components.last.name.should == component.name
+      end
+    end
+
+  end
+
   context "#delete_component" do
     let!(:component) { Capnotify::Component.new(:test_component) }
 

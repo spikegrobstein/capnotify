@@ -62,6 +62,36 @@ module Capnotify
       return nil
     end
 
+    # insert the given component before the component with `name`
+    # if no component is found with that name, the component will be inserted at the end
+    def insert_component_before(name, component)
+      # iterate over all components, find the component with the given name
+      # once found, insert the given component at that location and return
+      components.each_with_index do |c, i|
+        if c.name == name
+          components.insert(i, component)
+          return
+        end
+      end
+
+      components << component
+    end
+
+    # insert the given component after the component with `name`
+    # if no component is found with that name, the component will be inserted at the end
+    def insert_component_after(name, component)
+      # iterate over all components, find the component with the given name
+      # once found, insert the given component at the following location and return
+      components.each_with_index do |c, i|
+        if c.name == name
+          components.insert(i + 1, component)
+          return
+        end
+      end
+
+      components << component
+    end
+
     # delete the component with the given name
     # return the remaining list of components (to enable chaining)
     def delete_component(name)
