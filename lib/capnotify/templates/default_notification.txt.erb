@@ -7,7 +7,9 @@
 <%= k %>: <%= v %>
   <% end %>
 <% elsif component.content.is_a? Array %>
-
+  <% component.content.each do |row| %>
+<%= row %>
+  <% end %>
 <% elsif component.content.is_a? String %>
   <%= component.content %>
 <% end %>

@@ -83,7 +83,13 @@
     <% end %>
     </dl>
     <% elsif component.content.is_a? Array %>
-
+      <ul>
+      <% component.content.each do |row| %>
+        <li>
+          <%= row %>
+        </li>
+      <% end %>
+      </ul>
     <% elsif component.content.is_a? String %>
       <%= component.content %>
     <% end %>
