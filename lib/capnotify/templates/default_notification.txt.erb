@@ -2,16 +2,16 @@
 
 <% capnotify.components.each do |component| %>
 --- <%= component.header %> ---
-<% if component.content.is_a? Hash %>
-  <% component.content.each do |k,v| %>
+<% if component.content(:txt).is_a? Hash %>
+  <% component.content(:txt).each do |k,v| %>
 <%= k %>: <%= v %>
   <% end %>
-<% elsif component.content.is_a? Array %>
-  <% component.content.each do |row| %>
+<% elsif component.content(:txt).is_a? Array %>
+  <% component.content(:txt).each do |row| %>
 <%= row %>
   <% end %>
-<% elsif component.content.is_a? String %>
-  <%= component.content %>
+<% elsif component.content(:txt).is_a? String %>
+  <%= component.content(:txt) %>
 <% end %>
 <% end %>
 

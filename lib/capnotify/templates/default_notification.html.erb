@@ -75,23 +75,23 @@
   <div class="<%= component.css_class %>">
     <h2><%= component.header %></h2>
 
-    <% if component.content.is_a? Hash %>
+    <% if component.content(:html).is_a? Hash %>
     <dl>
-    <% component.content.each do |k,v| %>
+    <% component.content(:html).each do |k,v| %>
       <dt><%= k %></dt>
       <dd><%= v %></dd>
     <% end %>
     </dl>
-    <% elsif component.content.is_a? Array %>
+    <% elsif component.content(:html).is_a? Array %>
       <ul>
-      <% component.content.each do |row| %>
+      <% component.content(:html).each do |row| %>
         <li>
           <%= row %>
         </li>
       <% end %>
       </ul>
-    <% elsif component.content.is_a? String %>
-      <%= component.content %>
+    <% elsif component.content(:html).is_a? String %>
+      <%= component.content(:html) %>
     <% end %>
   </div>
   <% end %>

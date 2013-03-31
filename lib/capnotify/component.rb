@@ -30,7 +30,7 @@ module Capnotify
       @content = new_content
     end
 
-    def content
+    def content(format=:txt)
       @content
     end
 
