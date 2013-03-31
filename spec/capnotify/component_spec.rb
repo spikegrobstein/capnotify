@@ -16,6 +16,10 @@ describe Capnotify::Component do
       Capnotify::Component.new('asdf', :css_class => 'great-component').css_class.should == 'great-component'
     end
 
+    it "should set the css_class to the default 'section' if not specified" do
+      Capnotify::Component.new('asdf').css_class.should == 'section'
+    end
+
     it "should allow building with a block" do
       c = Capnotify::Component.new(:test_component) do |c|
         c.header = 'My Header'
