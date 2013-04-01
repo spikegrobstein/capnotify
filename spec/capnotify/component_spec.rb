@@ -38,19 +38,4 @@ describe Capnotify::Component do
     end
   end
 
-  context "#content=" do
-
-    context "when given invalid content type" do
-      class MyContent;end
-
-      let(:new_content) { MyContent.new }
-      let(:component) { Capnotify::Component.new('component') }
-
-      it "should raise an error" do
-        lambda { component.content = new_content }.should raise_error(ArgumentError)
-      end
-    end
-
-  end
-
 end
