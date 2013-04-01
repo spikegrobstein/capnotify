@@ -1,6 +1,8 @@
 module Capnotify
   class Component
 
+    class TemplateUndefined < StandardError; end
+
     attr_accessor :header, :name
 
     # the class(s) for this component (as a string)
@@ -9,30 +11,19 @@ module Capnotify
     # a block that will configure this instance lazily
     attr_reader :builder
 
-    @@default_template_path = File.join( File.dirname(__FILE__), 'templates' )
+    attr_accessor :template_path, :renderers
 
-    @@default_renderers = {
-      :html => '_component.html.erb',
-      :txt => '_component.txt.erb'
-    }
-
-    @renderers = {}
-    @template_path = nil
-
-    class << self
-
-      def default_template_path(new_path)
-        @@default_template_path = new_path
-      end
-
-      def default_render_for(format, partial_filename)
-        @@default_renderers[format.to_sym] = partial_filename
-      end
-
-    end
 
     def initialize(name, options={}, &block)
       @name = name.to_sym
+
+      # default stuff
+      @template_path = File.join( File.dirname(__FILE__), 'templates' )
+
+      @renderers = {
+        :html => '_component.html.erb',
+        :txt => '_component.txt.erb'
+      }
 
       @header = options[:header]
       @css_class = options[:css_class] || 'section'
@@ -53,7 +44,11 @@ module Capnotify
     end
 
     def render_content(format)
-      ERB.new( File.open( template_path_for(format) ).read, nil, '%<>' ).result(self.get_binding)
+      begin
+        ERB.new( File.open( template_path_for(format) ).read, nil, '%<>' ).result(self.get_binding)
+      rescue TemplateUndefined
+        ''
+      end
     end
 
     # return the binding for this object
@@ -65,22 +60,15 @@ module Capnotify
     # set the template path for this particular instance
     # the template path is the path to the parent directory of a renderer ERB template
     def template_path_for(format)
-      @renderers ||= {}
+      raise TemplateUndefined, "Template for #{ format } is missing!" if @renderers[format].nil?
 
-      File.join( @template_path || @@default_template_path, @renderers[format] || @@default_renderers[format])
+      File.join( @template_path, @renderers[format] )
     end
 
     # create renderers
     # given a key for the format, provide the name of the ERB template to use to render relative to the template path
     def render_for(renderers={})
-      @renderers ||= {}
       @renderers = @renderers.merge(renderers)
-    end
-
-    # set the template_path for this instance
-    # the template_path is the parent directory of the ERB template used to render the component's content
-    def template_path(new_template_path)
-      @template_path = new_template_path
     end
 
     # call @builder with self as a param if @builder is present
