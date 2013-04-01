@@ -1,0 +1,11 @@
+<% if @content.is_a? Hash %>
+  <% @content.each do |k,v| %>
+<%= k %>: <%= v %>
+  <% end %>
+<% elsif @content.is_a? Array %>
+  <% @content.each do |row| %>
+<%= row %>
+  <% end %>
+<% elsif @content.is_a? String %>
+  <%= @content %>
+<% end %>

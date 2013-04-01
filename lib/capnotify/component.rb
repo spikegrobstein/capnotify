@@ -1,9 +1,6 @@
 module Capnotify
   class Component
 
-    # content can only be of these types of classes
-    VALID_CONTENT_CLASSES = [ String, Hash, Array ]
-
     attr_accessor :header, :name
 
     # the class(s) for this component (as a string)
@@ -11,6 +8,28 @@ module Capnotify
 
     # a block that will configure this instance lazily
     attr_reader :builder
+
+    @@default_template_path = File.join( File.dirname(__FILE__), 'templates' )
+
+    @@default_renderers = {
+      :html => '_component.html.erb',
+      :txt => '_component.txt.erb'
+    }
+
+    @renderers = {}
+    @template_path = nil
+
+    class << self
+
+      def default_template_path(new_path)
+        @@default_template_path = new_path
+      end
+
+      def default_render_for(format, partial_filename)
+        @@default_renderers[format.to_sym] = partial_filename
+      end
+
+    end
 
     def initialize(name, options={}, &block)
       @name = name.to_sym
@@ -26,13 +45,34 @@ module Capnotify
 
     # assign the content as new_content
     def content=(new_content)
-      raise ArgumentError, "content must be a #{ VALID_CONTENT_CLASSES.join(', ') }" unless VALID_CONTENT_CLASSES.include?(new_content.class)
-
       @content = new_content
     end
 
-    def content(format=:txt)
+    def content
       @content
+    end
+
+    def render_content(format)
+      ERB.new( File.open( template_path_for(format) ).read, nil, '%<>' ).result(self.get_binding)
+    end
+
+    def get_binding
+      binding
+    end
+
+    def template_path_for(format)
+      @renderers ||= {}
+
+      File.join( @template_path || @@default_template_path, @renderers[format] || @@default_renderers[format])
+    end
+
+    def render_for(renderers={})
+      @renderers ||= {}
+      @renderers = @renderers.merge(renderers)
+    end
+
+    def template_path(new_template_path)
+      @template_path = new_template_path
     end
 
     # call @builder with self as a param if @builder is present

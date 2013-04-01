@@ -55,27 +55,10 @@
   </h1>
 
   <% capnotify.components.each do |component| %>
-  <div class="<%= component.css_class %>">
-    <h2><%= component.header %></h2>
+    <div class="<%= component.css_class %>">
+      <h2><%= component.header %></h2>
 
-    <% if component.content(:html).is_a? Hash %>
-    <dl>
-    <% component.content(:html).each do |k,v| %>
-      <dt><%= k %></dt>
-      <dd><%= v %></dd>
-    <% end %>
-    </dl>
-    <% elsif component.content(:html).is_a? Array %>
-      <ul>
-      <% component.content(:html).each do |row| %>
-        <li>
-          <%= row %>
-        </li>
-      <% end %>
-      </ul>
-    <% elsif component.content(:html).is_a? String %>
-      <%= component.content(:html) %>
-    <% end %>
+      <%= component.render_content(:html) %>
   </div>
   <% end %>
 
