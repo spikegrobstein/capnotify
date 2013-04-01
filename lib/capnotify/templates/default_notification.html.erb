@@ -41,6 +41,11 @@
       text-align: center;
     }
 
+    <% capnotify.components.each do |component| %>
+      <%= component.custom_css %>
+
+    <% end %>
+
   </style>
 </head>
 <body>

@@ -7,7 +7,7 @@ module Capnotify
     attr_accessor :header, :name
 
     # the class(s) for this component (as a string)
-    attr_accessor :css_class#, :custom_css
+    attr_accessor :css_class, :custom_css
 
     # a block that will configure this instance lazily
     attr_reader :builder
@@ -17,6 +17,7 @@ module Capnotify
 
       @header = options[:header]
       @css_class = options[:css_class] || 'section'
+      @custom_css = options[:custom_css]
 
       if block_given?
         @builder = block
