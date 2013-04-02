@@ -289,7 +289,7 @@ The `capnotify.appname` function calls the `capnotify_appname` Capistrano variab
 by default, combines the `application` and the optional `stage` variables. To override this,
 you can do something like the following example:
 
-    set :capnotify_appname, "#{ application }/#{ branch }"
+    set :capnotify_appname, "#{ application }/#{ branch } #{ stage.capitalize }"
 
 That will replace the behavior of the `capnotify.appname` calls.
 
@@ -305,18 +305,46 @@ the `set` command:
  * `capnotify_maintenance_up_msg`
  * `capnotify_maintenance_down_msg`
 
-## Built-in Templates
+## Built-in Templates for Long Messages
 
-TODO: full rundown of working with built-in templates
+In addition to the Short Messages above, Capnotify comes with support for long-form messages
+for use in emails. There are built-in ERB templates for both HTML and Text emails.
+
+Two Capistrano variables are defined which build their associated templates when called, so
+the contents of the messages can be easily overridden if you'd like.
+
+### capnotify_deployment_notification_html
+
+This will generate the HTML message, designed for notifying of a completed deployment. It
+will use the built-in template defined by `capnotify_deployment_notification_html_template_path`
+which points to the html template in this gem's `lib/capnotify/templates` directory.
+
+### capnotify_deployment_notification_text
+
+This generates a plain-text message, designed for notifying of a completed deployment. It
+will use the built-in template defined by `capnotify_deployment_notification_text_template_path`
+which points to the html template in this gem's `lib/capnotify/templates` directory.
 
 ### Components
 
-TODO: full rundown of working with components
+At the core of each of these templates is the concept of Components. These components allow
+for the easy creation of sections in the email to put custom data and as an entry-point for
+extensions to add additional information to the emails/notifications.
 
- * name
+Each Component has a name which is used to reference it internally for working with
+it directly (i.e. deleting it from the email body or making changes to it after the fact).
+Outside of that, Components have the following properties:
+
+*Work in progress...*
+
  * header
  * custom css
+ * custom css class
  * content
+   * Hash
+   * Array
+   * String
+ * custom templates
 
 also
 
@@ -325,12 +353,6 @@ also
  * inserting components
  * getting component by name
  * lazy components
-
-### Customizing Templates
-
-TODO: write info for replacing built-in templates
-
- * replacing built-in templates
 
 ## Extensions
 
