@@ -20,6 +20,9 @@ module Capnotify
       _cset :capnotify_deployment_notification_html_template_path, capnotify.built_in_template_for('default_notification.html.erb')
       _cset :capnotify_deployment_notification_text_template_path, capnotify.built_in_template_for('default_notification.txt.erb')
 
+      # get the name of the user deploying
+      # if using git, this will read that from your git config
+      # otherwise will use the currently logged-in user's name
       _cset(:deployer_username) do
         if exists?(:scm) && fetch(:scm).to_sym == :git
           `git config user.name`.chomp
