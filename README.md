@@ -140,15 +140,25 @@ See **Components** for information on creating components.
 See **Built-in Templates** for information on customizing templates and replacing with
 your own templates.
 
-## Hooks and Callbacks
+## Hooks, Callbacks and Events
 
 Capnotify provides hooks and callbacks for common, notifiable tasks in addition
 to the standard Capistrano set.
 
-### Default callbacks
+### Default Hooks
 
-Following are all of the built-in default callbacks. Each callback will have a brief
-description of the purpose and the time at which it's called, suggested associated messages
+Capnotify has a series of built-in default hooks that you can use to take action when
+certain events occur in your Capistrano recipes:
+
+ * `deploy_start`
+ * `deploy_complete`
+ * `migrate_start`
+ * `migrate_complete`
+ * `maintenance_page_up`
+ * `maintenance_page_down`
+
+Following are descriptions of each built-in hook with a brief description, purpose and
+time in which it is called, suggested associated messages
 (see **Messages** sections for more information about these) and an example of how to use it.
 
 #### deploy_start
@@ -245,7 +255,8 @@ called from anywhere by using `trigger :deploy_start`.
 
 ### Disabling default callbacks
 
-Setting the following Capistrano variables to `true` will disable the respective hook pairs:
+Setting the following Capistrano variables to `true` will disable the respective built-in
+hook pairs:
 
  * `capnotify_disable_deploy_hooks`
  * `capnotify_disable_migrate_hooks`
@@ -257,7 +268,10 @@ For example:
 
 Will disable triggering both `deploy_start` and `deploy_complete`.
 
-Currently, this must be set **BEFORE** Capnotify is loaded to be effective.
+These only affect the *built-in* hooks, so if you have an extension that defines its own, you
+should consult that extension's documentation for ways to disable its hooks. Extension
+developers are encouraged to implement the above methods in their own extensions for the sake
+of consistency.
 
 ## Built-in strings and functions
 
@@ -265,7 +279,7 @@ Capnotify has a collection of built-in strings for messages that can be embedded
 These are all built using the `capnotify.appname` function which contains the `application` and
 optional `stage` values (eg: `MyApplication production`).
 
-You can override these values by `set`'ing the value in your recipe or extension. For example:
+You can override these values by `set`ing the value in your recipe or extension. For example:
 
     set :capnotify_migrate_start_msg, "Migration has just begun!"
 
@@ -279,7 +293,7 @@ you can do something like the following example:
 
 That will replace the behavior of the `capnotify.appname` calls.
 
-### Messages
+### Short Messages
 
 The following messages are built-in using Capistrano variables. They can be overridden using
 the `set` command:
