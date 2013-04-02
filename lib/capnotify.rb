@@ -83,28 +83,6 @@ module Capnotify
         data.gsub(/^ +/, '').gsub(/\n{3,}/, "\n\n")
       end
 
-      # configure the callbacks
-      # FIXME: The `capnotify_disable_*_hooks` variables must be set BEFORE this file is loaded
-      # to properly disable the hooks. This should probably be put inside an on(:load) block.
-
-      # deploy start/complete
-      unless fetch(:capnotify_disable_deploy_hooks, false)
-        before('deploy') { trigger :deploy_start }
-        after('deploy')  { trigger :deploy_complete }
-      end
-
-      # migration start/complete
-      unless fetch(:capnotify_disable_migrate_hooks, false)
-        before('deploy:migrate') { trigger :migrate_start }
-        after('deploy:migrate')  { trigger :migrate_complete }
-      end
-
-      # maintenance start/complete
-      unless fetch(:capnotify_disable_maintenance_hooks, false)
-        after('deploy:web:disable') { trigger :maintenance_page_up }
-        after('deploy:web:enable')  { trigger :maintenance_page_down }
-      end
-
       # before update_code, fetch the current revision
       # this is needed to ensure that no matter when capnotify fetches the commit logs,
       # it will have the correct starting point.
@@ -112,8 +90,33 @@ module Capnotify
         set :capnotify_previous_revision, fetch(:current_revision, nil) # the revision that's currently deployed at this moment
       end
 
-      capnotify.load_plugin :capnotify_overview, Capnotify::Plugin::Overview
-      capnotify.load_plugin :capnotify_details, Capnotify::Plugin::Details
+      # configure the callbacks
+
+      on(:load) do
+        # deploy start/complete
+        unless fetch(:capnotify_disable_deploy_hooks, false)
+          before('deploy') { trigger :deploy_start }
+          after('deploy')  { trigger :deploy_complete }
+        end
+
+        # migration start/complete
+        unless fetch(:capnotify_disable_migrate_hooks, false)
+          before('deploy:migrate') { trigger :migrate_start }
+          after('deploy:migrate')  { trigger :migrate_complete }
+        end
+
+        # maintenance start/complete
+        unless fetch(:capnotify_disable_maintenance_hooks, false)
+          after('deploy:web:disable') { trigger :maintenance_page_up }
+          after('deploy:web:enable')  { trigger :maintenance_page_down }
+        end
+
+        unless fetch(:capnotify_disable_default_components, false)
+          capnotify.load_plugin :capnotify_overview, Capnotify::Plugin::Overview
+          capnotify.load_plugin :capnotify_details, Capnotify::Plugin::Details
+        end
+      end
+
     end
   end
 

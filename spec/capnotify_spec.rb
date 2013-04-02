@@ -10,6 +10,12 @@ describe Capnotify do
     Capnotify.load_into(config)
   end
 
+  after do
+    Capistrano::EXTENSIONS.keys.each do |ex|
+      Capistrano.remove_plugin(ex)
+    end
+  end
+
   let(:capnotify) { config.capnotify }
 
   context "loading" do
@@ -51,6 +57,8 @@ describe Capnotify do
           end
         end
       end
+
+      config.trigger(:load)
     end
 
     context "deploy callbacks" do
@@ -157,6 +165,32 @@ describe Capnotify do
 
     end
 
+  end
+
+  context "capnotify_disable_default_components" do
+
+    context "when it is set to true" do
+
+      before do
+        config.load do
+          set :capnotify_disable_default_components, true
+        end
+      end
+
+      it "should not have any plugins loaded by default" do
+        config.trigger(:load)
+        Capistrano::EXTENSIONS.keys.map(&:to_s).grep(/^capnotify_/).count.should == 0
+      end
+
+    end
+
+    context "when it is not set" do
+
+      it "should have defauilt plugins loaded by default" do
+        config.trigger(:load)
+        Capistrano::EXTENSIONS.keys.map(&:to_s).grep(/^capnotify_/).count.should > 0
+      end
+    end
   end
 
 end

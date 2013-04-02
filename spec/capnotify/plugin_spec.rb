@@ -36,6 +36,12 @@ describe Capnotify::Plugin do
     Capnotify.load_into(config)
   end
 
+  after do
+    Capistrano::EXTENSIONS.keys.each do |ex|
+      Capistrano.remove_plugin(ex)
+    end
+  end
+
   let(:capnotify) { config.capnotify }
 
   context "#appname" do
