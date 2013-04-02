@@ -13,6 +13,8 @@ module Capnotify
 
     attr_accessor :template_path, :renderers
 
+    attr_accessor :config
+
 
     def initialize(name, options={}, &block)
       @name = name.to_sym
@@ -74,10 +76,11 @@ module Capnotify
     # call @builder with self as a param if @builder is present
     # ensure builder is nil
     # then return self
-    def build!
+    def build!(config)
       @builder.call(self) unless @builder.nil?
 
       @builder = nil
+      @config = config
 
       return self
     end

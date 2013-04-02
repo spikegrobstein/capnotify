@@ -100,7 +100,7 @@ module Capnotify
 
     # build all components
     def build_components!
-      set :capnotify_component_list, self.components.map { |c| c.build! }
+      set :capnotify_component_list, self.components.map { |c| c.build!(self) }
     end
 
   end
