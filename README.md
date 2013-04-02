@@ -123,7 +123,8 @@ A quick example of creating and appending a component to Capnotify is the follow
 This above example is taken straight from the `Overview` extension that's built into
 Capnotify.
 
-For more information on Components, see the **Components** section below.
+This only scratched the surface of what you can do with this; for more information
+on Components, see the **Components** section below.
 
 #### More information
 
@@ -157,7 +158,7 @@ By default he `deploy_start` hook is called immediately before the
 
 Suggested message: `capnotify_deploy_start_msg`
 
-##### Example:
+Example:
 
     on(:deploy_start) do
       MyService.notify( capnotify_deploy_start_msg )
@@ -170,7 +171,7 @@ Capistrano task.
 
 Suggested message: `capnotify_deploy_complete_msg`
 
-##### Example:
+Example:
 
     on(:deploy_complete) do
       MyService.notify( capnotify_deploy_complete_msg )
@@ -184,7 +185,7 @@ elapsed time a migration takes.
 
 Suggested message: `capnotify_migrate_start_msg`
 
-##### Example:
+Example:
 
     on(:migrate_start) do
       MyService.notify( capnotify_migrate_start_msg )
@@ -196,7 +197,7 @@ By default, the `migrate_complete` hook is called immediately after `deploy:migr
 
 Suggested message: `capnotify_migrate_complete_msg`
 
-##### Example:
+Example:
 
     on(:migrate_complete) do
       MyService.notify( capnotify_migrate_complete_msg )
@@ -208,7 +209,7 @@ By default, the `maintenance_page_up` hook is called immediately before `deploy:
 
 Suggested message: `capnotify_maintenance_up_msg`
 
-##### Example:
+Example:
 
     on(:maintenance_page_up) do
       MyService.notify( capnotify_maintenance_up_msg )
@@ -220,7 +221,7 @@ By default, the `maintenance_page_down` hook is called immediately after `deploy
 
 Suggested message: `capnotify_maintenance_down_msg`
 
-##### Example:
+Example:
 
     on(:maintenance_page_down) do
       MyService.notify( capnotify_maintenance_down_msg )
