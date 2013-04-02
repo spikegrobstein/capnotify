@@ -33,7 +33,6 @@ module Capnotify
 
       # built-in values:
       set :capnotify_component_list, []
-      set :capnotify_plugins, {}
 
       # override this to change the default behavior for capnotify.appname
       _cset(:capnotify_appname) do
