@@ -117,6 +117,8 @@ module Capnotify
           capnotify.load_plugin :capnotify_overview, Capnotify::Plugin::Overview
           capnotify.load_plugin :capnotify_details, Capnotify::Plugin::Details
         end
+
+        capnotify.print_splash
       end
 
     end

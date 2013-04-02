@@ -4,6 +4,20 @@ require 'pry'
 module Capnotify
   module Plugin
 
+    def print_splash
+      return if fetch(:capnotify_hide_splash, false)
+
+      puts <<-SPLASH
+           __________________
+      - --|\\   Deployment   /|    _____                    __  _ ___
+     - ---| \\   Complete   / |   / ___/__ ____  ___  ___  / /_(_) _/_ __
+    - ----| /\\____________/\\ |  / /__/ _ `/ _ \\/ _ \\/ _ \\/ __/ / _/ // /
+   - -----|/ - Capistrano - \\|  \\___/\\_,_/ .__/_//_/\\___/\\__/_/_/ \\_, /
+  - ------|__________________|          /_/                      /___/
+
+      SPLASH
+    end
+
     # convenience method for getting the friendly app name
     # If the stage is specified (the deployment is using multistage), include that.
     # given that the application is "MyApp" and the stage is "production", this will return "MyApp production"
