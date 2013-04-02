@@ -32,7 +32,7 @@ describe Capnotify::Component do
       c.builder.should_not be_nil
       c.header.should be_nil
 
-      c.build!
+      c.build!(nil)
 
       c.header.should == 'My Header'
       c.builder.should be_nil
