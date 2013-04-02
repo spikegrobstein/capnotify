@@ -18,7 +18,7 @@ module Capnotify
       end
 
       def unload
-        capnotify.components.delete_if { |p| p.name == :capnotify_details }
+        capnotify.delete_component :capnotify_details
       end
 
     end
