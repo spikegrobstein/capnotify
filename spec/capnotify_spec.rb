@@ -178,6 +178,14 @@ describe Capnotify do
           config.set :branch, 'mybranch'
         end
 
+        it "should include the application name" do
+          config.capnotify_appname.should match(/SimpleApp/)
+        end
+
+        it "should include the stage name" do
+          config.capnotify_appname.should match(/production/)
+        end
+
         it "should contain the branch name" do
           config.capnotify_appname.should match(/mybranch/)
         end

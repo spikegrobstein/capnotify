@@ -39,7 +39,7 @@ module Capnotify
       _cset(:capnotify_appname) do
         name = [ fetch(:application, nil), fetch(:stage, nil) ].compact.join(" ")
         if fetch(:branch, nil)
-          name = "name / #{ branch }"
+          name = "#{ name } / #{ branch }"
         end
         name
       end
