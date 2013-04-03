@@ -156,11 +156,32 @@ describe Capnotify do
       end
 
       it "should include the application name" do
-        config.capnotify_appname.should match('SimpleApp')
+        config.capnotify_appname.should match(/SimpleApp/)
       end
 
       it "should include the stage name" do
-        config.capnotify_appname.should match('production')
+        config.capnotify_appname.should match(/production/)
+      end
+
+      context "when the branch is not specified" do
+
+        it "should only include the app and stage name" do
+          config.capnotify_appname.split(/\s/).count.should == 2 # should only have 2 words in it
+          config.capnotify_appname.should_not match(/\//) # should not have a slash
+        end
+
+      end
+
+      context "when the branch is specified" do
+
+        before do
+          config.set :branch, 'mybranch'
+        end
+
+        it "should contain the branch name" do
+          config.capnotify_appname.should match(/mybranch/)
+        end
+
       end
 
     end

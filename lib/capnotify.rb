@@ -37,7 +37,11 @@ module Capnotify
 
       # override this to change the default behavior for capnotify.appname
       _cset(:capnotify_appname) do
-        [ fetch(:application, '').capitalize, fetch(:stage, '') ].compact.join(" ")
+        name = [ fetch(:application, nil), fetch(:stage, nil) ].compact.join(" ")
+        if fetch(:branch, nil)
+          name = "name / #{ branch }"
+        end
+        name
       end
 
       # default messages:
