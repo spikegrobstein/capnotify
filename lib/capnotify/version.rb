@@ -1,3 +1,3 @@
 module Capnotify
-  VERSION = "0.1.4pre"
+  VERSION = "0.1.5pre"
 end
