@@ -59,12 +59,14 @@ module Capnotify
 
       # short message for the start of a deployment
       _cset(:capnotify_deploy_start_msg) do
-        "#{ capnotify.appname } deployment starting."
+        "#{ capnotify.appname } deployment starting.
+        Ref: #{ fetch(:real_revision) }"
       end
 
       # short message for the completion of a deployment
       _cset(:capnotify_deploy_complete_msg) do
-        "#{ capnotify.appname } deployment completed."
+        "#{ capnotify.appname } deployment completed.
+        Ref: #{ fetch(:real_revision) }"
       end
 
       # short message for putting up a maintenance page
