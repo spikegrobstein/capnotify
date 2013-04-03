@@ -24,7 +24,7 @@ is made.
 
 Add this line to your application's Gemfile:
 
-    gem 'capnotify'
+    gem "capnotify", "~> 0.1.6pre"
 
 And then execute:
 
@@ -32,7 +32,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install capnotify
+    $ gem install capnotify --pre
 
 Then, in your `Capfile`, add the following line:
 
