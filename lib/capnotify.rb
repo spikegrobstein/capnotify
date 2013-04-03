@@ -54,7 +54,7 @@ module Capnotify
 
       # short message for the start of a deployment
       _cset(:capnotify_deploy_start_msg) do
-        "#{ capnotify.appname } deployment completed."
+        "#{ capnotify.appname } deployment starting."
       end
 
       # short message for the completion of a deployment
