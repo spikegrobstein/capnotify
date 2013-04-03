@@ -1,3 +1,4 @@
+require 'capistrano'
 require "capnotify/version"
 require 'capnotify/component'
 require 'capnotify/plugin'
