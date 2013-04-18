@@ -5,8 +5,6 @@ module Capnotify
   module Plugin
 
     def print_splash
-      return if fetch(:capnotify_hide_splash, false)
-
       puts <<-SPLASH
            __________________
       - --|\\   Deployment   /|    _____                    __  _ ___

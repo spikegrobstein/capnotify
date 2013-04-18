@@ -123,7 +123,7 @@ module Capnotify
           capnotify.load_default_plugins
         end
 
-        capnotify.print_splash
+        capnotify.print_splash if fetch(:capnotify_show_splash, false)
       end
 
     end
