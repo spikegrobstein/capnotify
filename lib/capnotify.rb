@@ -2,6 +2,7 @@ require 'capistrano'
 require "capnotify/version"
 require 'capnotify/component'
 require 'capnotify/plugin'
+require 'capnotify/plugin/message'
 require 'capnotify/plugin/overview'
 require 'capnotify/plugin/details'
 
@@ -119,8 +120,7 @@ module Capnotify
         end
 
         unless fetch(:capnotify_disable_default_components, false)
-          capnotify.load_plugin :capnotify_overview, Capnotify::Plugin::Overview
-          capnotify.load_plugin :capnotify_details, Capnotify::Plugin::Details
+          capnotify.load_default_plugins
         end
 
         capnotify.print_splash
