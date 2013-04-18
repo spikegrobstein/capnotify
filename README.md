@@ -354,9 +354,14 @@ also
  * getting component by name
  * lazy components
 
+This should probably be in the wiki rather than the readme.
+
 ## Extensions
 
-Need to write this.
+It's possible to write extensions for Capnotify. Typically, these will be used to add new
+components to long messages.
+
+Need to write this. This will probably wind up in the wiki instead of here.
 
 ## Contributing
 
