@@ -19,6 +19,9 @@ describe Capnotify::Plugin do
   # a plugin for testing with
   # wires up init and unload to the ProxyObject
   module MyPlugin
+
+    PLUGIN_NAME = :my_plugin
+
     def init
       ProxyObject.instance.call_init
     end
@@ -65,7 +68,7 @@ describe Capnotify::Plugin do
 
     it "should load the plugin into capistrano" do
       config.load do
-        capnotify.load_plugin :my_plugin, MyPlugin
+        capnotify.load_plugin MyPlugin
       end
 
       Capistrano::EXTENSIONS.keys.should include(:my_plugin)
@@ -75,7 +78,7 @@ describe Capnotify::Plugin do
       ProxyObject.instance.should_receive :call_init
 
       config.load do
-        capnotify.load_plugin :my_plugin, MyPlugin
+        capnotify.load_plugin MyPlugin
       end
 
     end
@@ -86,7 +89,7 @@ describe Capnotify::Plugin do
 
     before do
       config.load do
-        capnotify.load_plugin :my_plugin, MyPlugin
+        capnotify.load_plugin MyPlugin
       end
     end
 
@@ -115,7 +118,7 @@ describe Capnotify::Plugin do
     context "when plugin exists" do
       before do
         config.load do
-          capnotify.load_plugin :my_plugin, MyPlugin
+          capnotify.load_plugin MyPlugin
         end
       end
 

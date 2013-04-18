@@ -24,15 +24,15 @@ module Capnotify
     end
 
     def load_default_plugins
-      capnotify.load_plugin :capnotify_message, Capnotify::Plugin::Message
-      capnotify.load_plugin :capnotify_overview, Capnotify::Plugin::Overview
-      capnotify.load_plugin :capnotify_details, Capnotify::Plugin::Details
+      capnotify.load_plugin Capnotify::Plugin::Message
+      capnotify.load_plugin Capnotify::Plugin::Overview
+      capnotify.load_plugin Capnotify::Plugin::Details
     end
 
-    def load_plugin(name, mod)
-      Capistrano.plugin name, mod
+    def load_plugin(mod)
+      Capistrano.plugin mod::PLUGIN_NAME, mod
 
-      get_plugin(name).init
+      get_plugin(mod::PLUGIN_NAME).init
     end
 
     def unload_plugin(name)
