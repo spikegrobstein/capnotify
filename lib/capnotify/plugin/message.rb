@@ -2,8 +2,10 @@ module Capnotify
   module Plugin
     module Message
 
+      PLUGIN_NAME = :capnotify_message
+
       def init
-        capnotify.components << Capnotify::Component.new(:capnotify_message) do |c|
+        capnotify.components << Capnotify::Component.new(PLUGIN_NAME) do |c|
           c.header = 'Message'
 
           c.content = fetch(:notification_msg, nil)
@@ -11,7 +13,7 @@ module Capnotify
       end
 
       def unload
-        capnotify.delete_component :capnotify_message
+        capnotify.delete_component PLUGIN_NAME
       end
 
     end

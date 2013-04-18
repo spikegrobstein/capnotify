@@ -2,8 +2,10 @@ module Capnotify
   module Plugin
     module Details
 
+      PLUGIN_NAME = :capnotify_details
+
       def init
-        capnotify.components << Capnotify::Component.new(:capnotify_details) do |c|
+        capnotify.components << Capnotify::Component.new(PLUGIN_NAME) do |c|
           c.header = 'Deployment Details'
 
           c.content = {}
@@ -18,7 +20,7 @@ module Capnotify
       end
 
       def unload
-        capnotify.delete_component :capnotify_details
+        capnotify.delete_component PLUGIN_NAME
       end
 
     end
