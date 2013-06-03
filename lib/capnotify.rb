@@ -11,12 +11,14 @@ module Capnotify
     config.load do
       Capistrano.plugin :capnotify, ::Capnotify::Plugin
 
+      # conditionally set a capistrano var if it hasn't been set, yet.
+      # this functin was ganked from the built-in capistrano deploy recipe
+      # since we can't count on this function being defined, we redefine here.
       def _cset(name, *args, &block)
         unless exists?(name)
           set(name, *args, &block)
         end
       end
-
 
       # some configuration
       _cset :capnotify_deployment_notification_html_template_path, capnotify.built_in_template_for('default_notification.html.erb')
