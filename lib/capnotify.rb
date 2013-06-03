@@ -41,8 +41,12 @@ module Capnotify
       end
 
       # built-in values:
+
+      # This is the list of components to use for the notification
       set :capnotify_component_list, []
 
+      # The name of the application. Used in pretty much every built-in message
+      # by default, the output should be: "APPNAME STAGE / BRANCH"
       # override this to change the default behavior for capnotify.appname
       _cset(:capnotify_appname) do
         name = [ fetch(:application, nil), fetch(:stage, nil) ].compact.join(" ")
@@ -86,11 +90,13 @@ module Capnotify
       end
 
       # full email message to notify of deployment (html)
+      # when called, will compile the template and return the complete data as a string
       _cset(:capnotify_deployment_notification_html) do
         capnotify.build_template( fetch(:capnotify_deployment_notification_html_template_path) )
       end
 
       # full email message to notify of deployment (plain text)
+      # when called, will compile the template and return the complete data as a string
       _cset(:capnotify_deployment_notification_text) do
         data = capnotify.build_template( fetch(:capnotify_deployment_notification_text_template_path) )
 
@@ -99,15 +105,20 @@ module Capnotify
       end
 
       # before update_code, fetch the current revision
-      # this is needed to ensure that no matter when capnotify fetches the commit logs,
+      # this is needed to ensure that no matter when capnotify is run, it will have the correct previous (currently deployed) revision
       # it will have the correct starting point.
       before 'deploy:update_code' do
         set :capnotify_previous_revision, fetch(:current_revision, nil) # the revision that's currently deployed at this moment
       end
 
-      # configure the callbacks
 
       on(:load) do
+        # register the callbacks
+        # These callbacks can be disabled by setting the following variables to a truthy value:
+        #  * capnotify_disable_deploy_hooks
+        #  * capnotify_disable_migrate_hooks
+        #  * capnotify_disable_maintenance_hooks
+
         # deploy start/complete
         unless fetch(:capnotify_disable_deploy_hooks, false)
           before('deploy') { trigger :deploy_start }
@@ -126,10 +137,14 @@ module Capnotify
           after('deploy:web:enable')  { trigger :maintenance_page_down }
         end
 
+        # load the default plugins
+        # disable loading them by setting capnotify_disable_default_components to a truthy value
         unless fetch(:capnotify_disable_default_components, false)
           capnotify.load_default_plugins
         end
 
+        # prints out a splash screen if capnotify_show_splash is set to true
+        # defaults to being silent.
         capnotify.print_splash if fetch(:capnotify_show_splash, false)
       end
 
