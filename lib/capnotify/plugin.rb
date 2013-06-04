@@ -4,6 +4,9 @@ require 'pry'
 module Capnotify
   module Plugin
 
+    # output a pretty splash screen of the Capnotify logo
+    # this can be enabled by setting capnotify_show_splash to a truthy value:
+    #  set :capnotify_show_splash, true
     def print_splash
       puts <<-SPLASH
            __________________
@@ -19,22 +22,34 @@ module Capnotify
     # convenience method for getting the friendly app name
     # If the stage is specified (the deployment is using multistage), include that.
     # given that the application is "MyApp" and the stage is "production", this will return "MyApp production"
+    # if capnotify_appname is not set, it'll return an empty string
     def appname
       fetch(:capnotify_appname, "")
     end
 
+    # load the default built-in plugins
+    # this is called automatically when capistrano is done loading
+    # you can disable this (and not laod any plugins by default) by setting capnotify_disable_default_components
+    #  set :capnotify_disable_default_components, true
     def load_default_plugins
       capnotify.load_plugin Capnotify::Plugin::Message
       capnotify.load_plugin Capnotify::Plugin::Overview
       capnotify.load_plugin Capnotify::Plugin::Details
     end
 
+    # given a module name, load it as a plugin
+    # capnotify plugins must conform to the spec. See docs for info.
+    # mod should be the module itself, eg:
+    #  capnotify.load_plugin Capnotify::Plugin::Message
     def load_plugin(mod)
       Capistrano.plugin mod::PLUGIN_NAME, mod
 
       get_plugin(mod::PLUGIN_NAME).init
     end
 
+    # given a plugin name as a symbol, unload the capnotify plugin
+    # this will also unload any kind of capistrano plugin
+    # if the plugin supports the unload method, it will be called.
     def unload_plugin(name)
       p = get_plugin(name)
 
@@ -42,6 +57,7 @@ module Capnotify
       Capistrano.remove_plugin(name)
     end
 
+    # given a plugin name, return the plugin.
     def get_plugin(name)
       raise "Unknown plugin: #{ name }" unless Capistrano::EXTENSIONS.keys.include?(name)
       self.send(name)
