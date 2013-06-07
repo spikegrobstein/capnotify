@@ -153,6 +153,10 @@ describe Capnotify::Plugin do
     end
 
     context "when building templates with components" do
+
+      let(:html_rendered_template) { capnotify.build_template( capnotify.built_in_template_for('default_notification.html.erb') ) }
+      let(:text_rendered_template) { capnotify.build_template( capnotify.built_in_template_for('default_notification.txt.erb') ) }
+
       before do
         capnotify.load_default_plugins
         capnotify.components.count.should > 0
@@ -160,17 +164,27 @@ describe Capnotify::Plugin do
 
       context "html templates" do
         it "should not render components with no content" do
-          data = capnotify.build_template( capnotify.built_in_template_for('default_notification.html.erb') )
-
-          data.should_not match(/Message/)
+          html_rendered_template.should_not match(/Message/) # the header
         end
 
         it "should render components with content" do
           config.set :notification_msg, 'ASDFASDF'
 
-          data = capnotify.build_template( capnotify.built_in_template_for('default_notification.html.erb') )
+          html_rendered_template.should match(/Message/) # the header
+          html_rendered_template.should match(/ASDFASDF/) # the content
+        end
+      end
 
-          data.should match(/ASDFASDF/)
+      context "text templates" do
+        it "should not render components with no content" do
+          text_rendered_template.should_not match(/Message/) # the header
+        end
+
+        it "should render components with content" do
+          config.set :notification_msg, 'ASDFASDF'
+
+          text_rendered_template.should match(/Message/) # the header
+          text_rendered_template.should match(/ASDFASDF/) # the content
         end
       end
 
