@@ -1,7 +1,8 @@
 <%= capnotify.appname %> deployment completed!
 
 <% capnotify.components.each do |component| %>
---- <%= @header %> ---
+  <% next if component.content.nil? %>
+--- <%= component.header %> ---
 <%= component.render_content(:txt) %>
 <% end %>
 
