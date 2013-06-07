@@ -9,16 +9,17 @@ module Capnotify
           c.header = 'Deployment Overview'
 
           c.content = {}
-          c.content['Deployed by'] = 'capnotify.deployed_by'
+          c.content['Deployed by'] = capnotify.deployed_by
           c.content['Deployed at'] = Time.now
-          c.content['Application'] = fetch(:application, '')
-          c.content['Repository'] = fetch(:repository, '')
+          c.content['Application'] = fetch(:application, 'n/a')
+          c.content['Repository'] = fetch(:repository, 'n/a')
         end
       end
 
       def unload
         capnotify.delete_component PLUGIN_NAME
       end
+
 
     end
   end

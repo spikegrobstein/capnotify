@@ -27,6 +27,19 @@ module Capnotify
       fetch(:capnotify_appname, "")
     end
 
+    # get the name of the deploying user
+    # currently this only supports git.
+    # if reading the git user.name, fall back on `whoami`
+    def deployed_by
+      username = nil
+      if fetch(:scm, '').to_sym == :git
+        username = `git config user.name`.chomp
+        username = nil if $? != 0
+      end
+
+      username || `whoami`.chomp
+    end
+
     # load the default built-in plugins
     # this is called automatically when capistrano is done loading
     # you can disable this (and not laod any plugins by default) by setting capnotify_disable_default_components
