@@ -152,6 +152,30 @@ describe Capnotify::Plugin do
       lambda { capnotify.build_template( capnotify.built_in_template_for('default_notification.txt.erb') ) }.should_not raise_error
     end
 
+    context "when building templates with components" do
+      before do
+        capnotify.load_default_plugins
+        capnotify.components.count.should > 0
+      end
+
+      context "html templates" do
+        it "should not render components with no content" do
+          data = capnotify.build_template( capnotify.built_in_template_for('default_notification.html.erb') )
+
+          data.should_not match(/Message/)
+        end
+
+        it "should render components with content" do
+          config.set :notification_msg, 'ASDFASDF'
+
+          data = capnotify.build_template( capnotify.built_in_template_for('default_notification.html.erb') )
+
+          data.should match(/ASDFASDF/)
+        end
+      end
+
+    end
+
   end
 
   context "#components" do
