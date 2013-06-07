@@ -45,6 +45,10 @@ module Capnotify
       @content
     end
 
+    # FIXME: this should probably leverage Procs for rendering of different types, maybe?
+    #        that would give a lot of power to a developer who wants a custom format for a plugin (eg XML or JSON)
+    # Render the content in the given format using the right built-in template. Returns the content as a string.
+    # In the event that there is not a valid template, return an empty string.
     def render_content(format)
       begin
         ERB.new( File.open( template_path_for(format) ).read, nil, '%<>' ).result(self.get_binding)
