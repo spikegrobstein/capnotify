@@ -32,9 +32,14 @@ module Capnotify
     # if reading the git user.name, fall back on `whoami`
     def deployed_by
       username = nil
-      if fetch(:scm, '').to_sym == :git
-        username = `git config user.name`.chomp
-        username = nil if $? != 0
+
+      scm = fetch(:scm, nil)
+
+      if scm
+        if scm.to_sym == :git
+          username = `git config user.name`.chomp
+          username = nil if $? != 0 || username.strip == ''
+        end
       end
 
       username || `whoami`.chomp
