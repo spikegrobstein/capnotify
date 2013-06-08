@@ -46,12 +46,12 @@ module Capnotify
       set :capnotify_component_list, []
 
       # The name of the application. Used in pretty much every built-in message
-      # by default, the output should be: "APPNAME STAGE / BRANCH"
+      # by default, the output should be: "STAGE APPNAME @ BRANCH"
       # override this to change the default behavior for capnotify.appname
       _cset(:capnotify_appname) do
-        name = [ fetch(:application, nil), fetch(:stage, nil) ].compact.join(" ")
+        name = [ fetch(:stage, nil), fetch(:application, nil) ].compact.map{|c| c.capitalize}.join(" ")
         if fetch(:branch, nil)
-          name = "#{ name } / #{ branch }"
+          name = "#{ name } @ #{ branch }"
         end
         name
       end
