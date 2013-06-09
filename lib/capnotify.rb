@@ -49,7 +49,7 @@ module Capnotify
       # by default, the output should be: "STAGE APPNAME @ BRANCH"
       # override this to change the default behavior for capnotify.appname
       _cset(:capnotify_appname) do
-        name = [ fetch(:stage, nil), fetch(:application, nil) ].compact.map{|c| c.capitalize}.join(" ")
+        name = [ fetch(:stage, nil), fetch(:application, nil) ].compact.join(" ")
         if fetch(:branch, nil)
           name = "#{ name } @ #{ branch }"
         end
