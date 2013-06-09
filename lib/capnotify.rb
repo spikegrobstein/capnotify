@@ -113,39 +113,41 @@ module Capnotify
 
 
       on(:load) do
-        # register the callbacks
-        # These callbacks can be disabled by setting the following variables to a truthy value:
-        #  * capnotify_disable_deploy_hooks
-        #  * capnotify_disable_migrate_hooks
-        #  * capnotify_disable_maintenance_hooks
+        unless fetch(:capnotify_off, nil)
+          # register the callbacks
+          # These callbacks can be disabled by setting the following variables to a truthy value:
+          #  * capnotify_disable_deploy_hooks
+          #  * capnotify_disable_migrate_hooks
+          #  * capnotify_disable_maintenance_hooks
 
-        # deploy start/complete
-        unless fetch(:capnotify_disable_deploy_hooks, false)
-          before('deploy') { trigger :deploy_start }
-          after('deploy')  { trigger :deploy_complete }
+          # deploy start/complete
+          unless fetch(:capnotify_disable_deploy_hooks, false)
+            before('deploy') { trigger :deploy_start }
+            after('deploy')  { trigger :deploy_complete }
+          end
+
+          # migration start/complete
+          unless fetch(:capnotify_disable_migrate_hooks, false)
+            before('deploy:migrate') { trigger :migrate_start }
+            after('deploy:migrate')  { trigger :migrate_complete }
+          end
+
+          # maintenance start/complete
+          unless fetch(:capnotify_disable_maintenance_hooks, false)
+            after('deploy:web:disable') { trigger :maintenance_page_up }
+            after('deploy:web:enable')  { trigger :maintenance_page_down }
+          end
+
+          # load the default plugins
+          # disable loading them by setting capnotify_disable_default_components to a truthy value
+          unless fetch(:capnotify_disable_default_components, false)
+            capnotify.load_default_plugins
+          end
+
+          # prints out a splash screen if capnotify_show_splash is set to true
+          # defaults to being silent.
+          capnotify.print_splash if fetch(:capnotify_show_splash, false)
         end
-
-        # migration start/complete
-        unless fetch(:capnotify_disable_migrate_hooks, false)
-          before('deploy:migrate') { trigger :migrate_start }
-          after('deploy:migrate')  { trigger :migrate_complete }
-        end
-
-        # maintenance start/complete
-        unless fetch(:capnotify_disable_maintenance_hooks, false)
-          after('deploy:web:disable') { trigger :maintenance_page_up }
-          after('deploy:web:enable')  { trigger :maintenance_page_down }
-        end
-
-        # load the default plugins
-        # disable loading them by setting capnotify_disable_default_components to a truthy value
-        unless fetch(:capnotify_disable_default_components, false)
-          capnotify.load_default_plugins
-        end
-
-        # prints out a splash screen if capnotify_show_splash is set to true
-        # defaults to being silent.
-        capnotify.print_splash if fetch(:capnotify_show_splash, false)
       end
 
     end

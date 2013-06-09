@@ -196,6 +196,67 @@ describe Capnotify do
 
   end
 
+  context "capnotify_off" do
+    context "when set" do
+
+      before do
+        # there has to be a better way of doing this...
+        # create a MockObject to handle the callbacks
+        class MockObject
+        end
+        MockObject.stub!(:deploy_start => true)
+        MockObject.stub!(:deploy_complete => true)
+        MockObject.stub!(:migrate_start => true)
+        MockObject.stub!(:migrate_complete => true)
+        MockObject.stub!(:maintenance_page_up => true)
+        MockObject.stub!(:maintenance_page_down => true)
+
+        config.load do
+          set :capnotify_off, true
+          # these don't get triggered unless something is defined.
+          on(:deploy_start) { MockObject.deploy_start }
+          on(:deploy_complete) { MockObject.deploy_complete }
+          on(:migrate_start) { MockObject.migrate_start }
+          on(:migrate_complete) { MockObject.migrate_complete }
+          on(:maintenance_page_up) { MockObject.maintenance_page_up }
+          on(:maintenance_page_down) { MockObject.maintenance_page_down }
+
+          # stub some tasks
+          namespace :deploy do
+            task(:default) {}
+            task(:migrate) {}
+            namespace :web do
+              task(:enable) {}
+              task(:disable) {}
+            end
+          end
+        end
+
+        config.trigger(:load)
+      end
+
+      it "should not load deploy hooks" do
+        MockObject.should_not_receive(:deploy_start)
+        MockObject.should_not_receive(:deploy_complete)
+        config.find_and_execute_task('deploy')
+      end
+
+      it "should not load migrate hooks" do
+        MockObject.should_not_receive(:migrate_start)
+        MockObject.should_not_receive(:migrate_complete)
+        config.find_and_execute_task('deploy:migrate')
+      end
+
+      it "should not load maintenance hooks" do
+        MockObject.should_not_receive(:maintenance_page_up)
+        MockObject.should_not_receive(:maintenance_page_down)
+        config.find_and_execute_task('deploy:web:enable')
+        config.find_and_execute_task('deploy:web:disable')
+      end
+
+    end
+  end
+
   context "capnotify_disable_default_components" do
 
     context "when it is set to true" do
