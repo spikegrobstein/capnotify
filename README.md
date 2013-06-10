@@ -94,7 +94,7 @@ notification email bodies for text or html respectively.
 See the section **Built-in Templates** below for more information about templates and how
 to further customize them.
 
-#### More information
+## More information
 
 The [Capnotify wiki](https://github.com/spikegrobstein/capnotify/wiki) is loaded with
 documentation on all of the ins and outs of Capnotify.
