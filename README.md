@@ -41,7 +41,7 @@ Then, in your `Capfile`, add the following line:
 ## Usage
 
 The current build of Capnotify is designed to be extended and doesn't provide much in the way
-of notifications out of the box. It does, however, lay out a framework with with default messages
+of notifications out of the box. It does, however, lay out a framework with default messages
 and provides a series of Capistrano callbacks
 that you can hook into and leverage your existing notification system, be it IRC, Email,
 Hipchat, or Grove.io.
