@@ -144,12 +144,7 @@ your own templates.
 ## Disabling Capnotify
 
 In the even that you want to perform some tasks but don't want Capnotify hooks to fire,
-you can use the `capnotify_off` variable either via `set` or the `-s` commandline option
-when calling `cap`. For example:
-
-    set :capnotify_off, true
-
-or
+you can use the `capnotify_off` variable via the `-s` commandline switch; for example:
 
     cap deploy -s capnotify_off=1
 
