@@ -51,9 +51,14 @@ Following are a few examples for hooking up into these callbacks.
 ### Quickstart
 
 Capnotify can be used in your current deployment recipes and is easy to implement. The
-following examples will get you up and running with these callbacks.
+following examples will get you up and running with these callbacks. When doing this, it's
+up to you to hook the callbacks up to your existing notification system of choice, whether it's
+a chat system like Grove.io and XMPP/Jabber or Twitter.
 
-#### Short Messages
+Below you will see a basic overview of how to tap into Capnotify's built-in callbacks and leverage
+the built-in messages.
+
+### Short Messages
 
 Capnotify has some built-in short messages right out of the box. If you'd like, for example,
 to send a short message notification when deployment starts and completes, it can be
@@ -68,10 +73,40 @@ done like the following:
     end
 
 In the case of the above example, replace the `SomeLib#send_message` call with your library's
-function.
+function. The `capnotify_deploy_start_msg` and `capnotify_deploy_complete_msg` variables contain
+some built-in messages that can be overridden by you in your recipes.
 
-A full list of available callbacks and built-in messages can be found below in the
-**Hooks and Callbacks** and **Messages** sections.
+For example, to override `capnotify_deploy_start_msg`, you would do the following:
+
+    set :capnotify_deploy_start_msg, "#{ capnotify.appname } deployment as BEGUN!"
+
+The above example uses a Capnotify built-in function `capnotify.appname` which builds a string
+containing the `application` Capistrano variable and the `stage`. A full list of available callbacks
+and built-in messages can be found in the wiki's
+[Hooks and Callbacks](wiki/HooksAndCallbacks) and [Messages](wiki/Messages) sections.
+
+### Long Messages
+
+Capnotify also has built-in long message Text/HTML templates and are primarily designed for
+building email messages, but don't necessarily need to be used for that.
+
+For a basic example of how to use the built-in templates in your email library, see the following:
+
+    on(:deploy_complete) do
+      MyMailer.send_mail(
+        :text_body => capnotify_deployment_notification_text,
+        :html_body => capnotify_deployment_notification_html
+      )
+    end
+
+Replace `MyMailer.send_email` with your email library's send method.
+
+The `capnotify_deployment_notification_text` and `capnotify_deployment_notification_html`
+Capistrano variables are lazily evaluated, and when called, will generate the deployment
+notification email bodies for text or html respectively.
+
+See the section [Built-in Templates](wiki/Templates) in the wiki for more information about templates
+and how to further customize them.
 
 #### Long Messages
 
